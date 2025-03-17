@@ -1,21 +1,39 @@
 
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Search, Heart, ShoppingBag, User, Menu, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Search, Heart, ShoppingBag, User, Menu, X, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useNavigate } from 'react-router-dom';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useToast } from '@/components/ui/use-toast';
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    // Check login status from localStorage
+    const loginStatus = localStorage.getItem('isLoggedIn') === 'true';
+    const name = localStorage.getItem('userName') || '';
+    setIsLoggedIn(loginStatus);
+    setUserName(name);
+  }, [location]); // Re-check when location changes
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery('');
       setIsMenuOpen(false);
     }
@@ -23,6 +41,17 @@ const Navbar = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userName');
+    setIsLoggedIn(false);
+    setUserName('');
+    toast({
+      description: "Logged out successfully",
+    });
+    navigate('/');
   };
 
   return (
@@ -43,19 +72,19 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-4">
             <Link 
               to="/" 
-              className={location.pathname === '/' ? 'nav-link-active' : 'nav-link'}
+              className={location.pathname === '/' ? 'text-primary font-medium' : 'text-gray-600 hover:text-primary'}
             >
               Home
             </Link>
             <Link 
               to="/deals" 
-              className={location.pathname === '/deals' ? 'nav-link-active' : 'nav-link'}
+              className={location.pathname === '/deals' ? 'text-primary font-medium' : 'text-gray-600 hover:text-primary'}
             >
               Deals
             </Link>
             <Link 
               to="/about" 
-              className={location.pathname === '/about' ? 'nav-link-active' : 'nav-link'}
+              className={location.pathname === '/about' ? 'text-primary font-medium' : 'text-gray-600 hover:text-primary'}
             >
               About
             </Link>
@@ -82,9 +111,39 @@ const Navbar = () => {
             <Link to="/wishlist" className="p-2 rounded-full hover:bg-muted">
               <Heart className="h-5 w-5" />
             </Link>
-            <Link to="/login" className="p-2 rounded-full hover:bg-muted">
-              <User className="h-5 w-5" />
-            </Link>
+
+            {isLoggedIn ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <div className="flex items-center justify-start p-2">
+                    <div className="flex flex-col space-y-1 leading-none">
+                      <p className="font-medium">Welcome, {userName}</p>
+                    </div>
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/wishlist" className="cursor-pointer w-full">
+                      <Heart className="mr-2 h-4 w-4" />
+                      <span>Wishlist</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link to="/login">
+                <Button variant="default">Login</Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -119,6 +178,7 @@ const Navbar = () => {
                 <Search className="h-4 w-4" />
               </Button>
             </form>
+
             <Link 
               to="/" 
               className="block py-2 text-base font-medium hover:text-primary"
@@ -140,6 +200,7 @@ const Navbar = () => {
             >
               About
             </Link>
+
             <div className="flex space-x-4 pt-2">
               <Link 
                 to="/wishlist" 
@@ -149,14 +210,28 @@ const Navbar = () => {
                 <Heart className="h-5 w-5 mr-2" />
                 Wishlist
               </Link>
-              <Link 
-                to="/login" 
-                className="flex items-center text-base font-medium hover:text-primary"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <User className="h-5 w-5 mr-2" />
-                Login
-              </Link>
+              
+              {isLoggedIn ? (
+                <button 
+                  onClick={() => {
+                    handleLogout();
+                    setIsMenuOpen(false);
+                  }}
+                  className="flex items-center text-base font-medium hover:text-primary"
+                >
+                  <LogOut className="h-5 w-5 mr-2" />
+                  Logout ({userName})
+                </button>
+              ) : (
+                <Link 
+                  to="/login" 
+                  className="flex items-center text-base font-medium hover:text-primary"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <User className="h-5 w-5 mr-2" />
+                  Login
+                </Link>
+              )}
             </div>
           </div>
         </div>
