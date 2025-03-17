@@ -13,11 +13,13 @@ import { useToast } from '@/components/ui/use-toast';
 interface ProductCardProps {
   product: Product;
   className?: string;
+  index?: number;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, className = '' }) =>  {
+const ProductCard: React.FC<ProductCardProps> = ({ product, className = '', index = 0 }) =>  {
   const { toast } = useToast();
   const [inWishlist, setInWishlist] = React.useState(isInWishlist(product.id));
+  const [animate, setAnimate] = React.useState(false);
 
   const lowestPrice = findLowestPrice(product.prices);
   const highestPrice = findHighestPrice(product.prices);
@@ -33,6 +35,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className = '' }) =>
     } else {
       addToWishlist(product.id);
       setInWishlist(true);
+      setAnimate(true);
+      setTimeout(() => setAnimate(false), 600);
       toast({
         description: "Added to wishlist",
       });
@@ -40,13 +44,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className = '' }) =>
   };
 
   return (
-    <Card className={`product-card ${className}`}>
+    <Card className={`product-card stagger-item scale-in hover-lift ${className}`} style={{ animationDelay: `${0.05 + index * 0.05}s` }}>
       <Link to={`/product/${product.id}`}>
         <div className="relative aspect-square overflow-hidden">
           <img
             src={product.imageUrl}
             alt={product.name}
-            className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+            className="object-cover w-full h-full transition-transform duration-500 hover:scale-110"
           />
           {product.rating && (
             <Badge className="absolute top-2 right-2 bg-primary">
@@ -66,7 +70,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className = '' }) =>
           <Button
             variant="ghost"
             size="icon"
-            className={`ml-2 ${inWishlist ? 'text-primary' : ''}`}
+            className={`ml-2 heart-favorite ${inWishlist ? 'text-primary' : ''} ${animate ? 'animate-heart-pulse' : ''}`}
             onClick={toggleWishlist}
           >
             <Heart className={`h-5 w-5 ${inWishlist ? 'fill-current' : ''}`} />
@@ -89,7 +93,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className = '' }) =>
           </div>
 
           {product.reviewCount && (
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-muted-foreground mt-1">
               {product.reviewCount} reviews
             </span>
           )}
@@ -98,7 +102,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className = '' }) =>
 
       <CardFooter className="p-4 pt-0">
         <Link to={`/product/${product.id}`} className="w-full">
-          <Button className="w-full">Compare Prices</Button>
+          <Button className="w-full btn-hover-effect transition-all duration-300 hover:bg-primary/90">
+            Compare Prices
+          </Button>
         </Link>
       </CardFooter>
     </Card>

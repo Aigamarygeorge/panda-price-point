@@ -1,34 +1,67 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { products, getDeals } from '@/utils/mockData';
 import ProductCard from '@/components/ProductCard';
 import Navbar from '@/components/Navbar';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Search, Sparkles } from 'lucide-react';
 
 const Index = () => {
   const deals = getDeals();
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <Navbar />
       
       <main className="container mx-auto px-4 py-8">
         {/* Hero Section */}
-        <section className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">
+        <section className="text-center mb-16 py-16">
+          <h1 className="text-4xl sm:text-5xl font-bold mb-6 fade-in">
             Welcome to Price<span className="text-primary">Panda</span>
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10 fade-in" style={{ animationDelay: '0.2s' }}>
             Compare prices across multiple stores and find the best deals on your favorite products.
           </p>
+          
+          {/* Large Centered Search Bar */}
+          <form onSubmit={handleSearch} className="max-w-3xl mx-auto scale-in" style={{ animationDelay: '0.4s' }}>
+            <div className="flex shadow-lg rounded-full overflow-hidden transition-all duration-300 hover:shadow-xl">
+              <Input
+                type="search"
+                placeholder="Search for products..."
+                className="w-full border-0 focus-visible:ring-0 py-6 px-6 text-lg rounded-l-full"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <Button type="submit" className="rounded-r-full bg-primary hover:bg-primary/90 px-6 py-6">
+                <Search className="h-5 w-5 mr-2" />
+                <span className="hidden sm:inline">Search</span>
+              </Button>
+            </div>
+          </form>
         </section>
 
         {/* Top Deals Section */}
         {deals.length > 0 && (
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-6">Top Deals</h2>
+          <section className="mb-16">
+            <div className="flex items-center mb-8">
+              <Sparkles className="text-accent mr-2 h-6 w-6" />
+              <h2 className="text-2xl font-semibold">Top Deals</h2>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {deals.map((product) => (
-                <ProductCard key={product.id} product={product} />
+              {deals.map((product, index) => (
+                <ProductCard key={product.id} product={product} index={index} />
               ))}
             </div>
           </section>
@@ -36,19 +69,37 @@ const Index = () => {
 
         {/* All Products Section */}
         <section>
-          <h2 className="text-2xl font-semibold mb-6">Popular Products</h2>
+          <h2 className="text-2xl font-semibold mb-8">Popular Products</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            {products.map((product, index) => (
+              <ProductCard key={product.id} product={product} index={index} />
             ))}
           </div>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-border mt-16 py-8">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>&copy; 2024 PricePanda. All rights reserved.</p>
+      <footer className="bg-white border-t border-border mt-16 py-12">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="mb-6 md:mb-0 flex items-center">
+              <span className="text-xl font-bold">Price<span className="text-primary">Panda</span></span>
+            </div>
+            <div className="flex space-x-6">
+              <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                Privacy Policy
+              </a>
+              <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                Terms of Service
+              </a>
+              <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                Contact Us
+              </a>
+            </div>
+          </div>
+          <div className="text-center mt-8 text-sm text-muted-foreground">
+            <p>&copy; 2024 PricePanda. All rights reserved.</p>
+          </div>
         </div>
       </footer>
     </div>
