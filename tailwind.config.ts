@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,12 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				panda: {
+					primary: '#2D9858',    // Bamboo green
+					secondary: '#212121',  // Black-ish color for panda's black
+					light: '#F5F5F5',      // Light color for background
+					accent: '#FFD166',     // Accent yellow for highlights
 				}
 			},
 			borderRadius: {
