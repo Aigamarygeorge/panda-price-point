@@ -124,7 +124,7 @@ const Navbar = () => {
                             >
                               <div className="w-12 h-12 rounded overflow-hidden flex-shrink-0">
                                 <img
-                                  src={product.image}
+                                  src={product.imageUrl}
                                   alt={product.name}
                                   className="w-full h-full object-cover"
                                 />
@@ -132,7 +132,7 @@ const Navbar = () => {
                               <div className="flex-1 min-w-0">
                                 <h3 className="text-sm font-medium truncate">{product.name}</h3>
                                 <p className="text-xs text-muted-foreground truncate">
-                                  {product.rating} ★ | {product.prices[0].store}
+                                  {product.rating} ★ | {product.prices[0].storeId}
                                 </p>
                               </div>
                             </Link>

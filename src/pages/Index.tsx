@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { getDeals } from '@/utils/mockData';
 import ProductCard from '@/components/ProductCard';
 import Navbar from '@/components/Navbar';
@@ -76,19 +76,19 @@ const Index = () => {
               <span className="text-xl font-bold">Price<span className="text-primary">Panda</span></span>
             </div>
             <div className="flex space-x-6">
-              <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+              <Link to="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 Privacy Policy
-              </a>
-              <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+              </Link>
+              <Link to="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 Terms of Service
-              </a>
-              <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+              </Link>
+              <Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 Contact Us
-              </a>
+              </Link>
             </div>
           </div>
           <div className="text-center mt-8 text-sm text-muted-foreground">
-            <p>&copy; 2024 PricePanda. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} PricePanda. All rights reserved.</p>
           </div>
         </div>
       </footer>
