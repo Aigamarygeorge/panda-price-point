@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { products, getDeals } from '@/utils/mockData';
+import { getDeals } from '@/utils/mockData';
 import ProductCard from '@/components/ProductCard';
 import Navbar from '@/components/Navbar';
 import { Input } from '@/components/ui/input';
@@ -66,16 +66,6 @@ const Index = () => {
             </div>
           </section>
         )}
-
-        {/* All Products Section */}
-        <section>
-          <h2 className="text-2xl font-semibold mb-8">Popular Products</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {products.map((product, index) => (
-              <ProductCard key={product.id} product={product} index={index} />
-            ))}
-          </div>
-        </section>
       </main>
 
       {/* Footer */}
