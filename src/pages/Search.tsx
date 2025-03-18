@@ -14,20 +14,15 @@ const Search = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (query) {
-      setIsLoading(true);
-      // Search for products
-      const results = searchProducts(query);
-      
-      // Add a small delay to show loading animation
-      setTimeout(() => {
-        setProducts(results);
-        setIsLoading(false);
-      }, 500);
-    } else {
-      setProducts([]);
+    setIsLoading(true);
+    // Search for products
+    const results = searchProducts(query);
+    
+    // Add a small delay to show loading animation
+    setTimeout(() => {
+      setProducts(results);
       setIsLoading(false);
-    }
+    }, 500);
   }, [query]);
 
   return (
@@ -37,10 +32,11 @@ const Search = () => {
       <main className="container mx-auto px-4 py-8">
         <section>
           <h1 className="text-2xl font-semibold mb-6 fade-in">
-            {products.length > 0 
-              ? `Search results for "${query}"`
-              : `No results found for "${query}"`
-            }
+            {query ? (
+              products.length > 0 
+                ? `Search results for "${query}"`
+                : `No results found for "${query}"`
+            ) : 'All Products'}
           </h1>
           
           {isLoading ? (

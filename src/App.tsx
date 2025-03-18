@@ -12,6 +12,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Wishlist from "./pages/Wishlist";
 import About from "./pages/About";
 import Deals from "./pages/Deals";
+import ProfileSettings from "./pages/ProfileSettings";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/about" element={<About />} />
           <Route path="/deals" element={<Deals />} />
+          <Route path="/profile-settings" element={<ProfileSettings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

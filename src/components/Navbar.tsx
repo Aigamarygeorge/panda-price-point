@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Search, Heart, ShoppingBag, User, Menu, X, LogOut } from 'lucide-react';
+import { Search, Heart, ShoppingBag, User, Menu, X, LogOut, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -104,23 +104,25 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Search Bar */}
-          <div className="hidden md:flex flex-1 max-w-md mx-4">
-            <form onSubmit={handleSearch} className="w-full flex">
-              <Input
-                type="search"
-                placeholder="Search for products..."
-                className={`w-full focus-visible:ring-primary rounded-l-full pl-4 transition-all duration-300 ${searchFocused ? 'search-bar-expanded' : 'search-bar-collapsed'}`}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onFocus={() => setSearchFocused(true)}
-                onBlur={() => setSearchFocused(false)}
-              />
-              <Button type="submit" className="rounded-r-full bg-primary hover:bg-primary/90 transition-all duration-300">
-                <Search className="h-4 w-4" />
-              </Button>
-            </form>
-          </div>
+          {/* Search Bar - Only show on non-home pages */}
+          {location.pathname !== '/' && (
+            <div className="hidden md:flex flex-1 max-w-md mx-4">
+              <form onSubmit={handleSearch} className="w-full flex">
+                <Input
+                  type="search"
+                  placeholder="Search for products..."
+                  className={`w-full focus-visible:ring-primary rounded-l-full pl-4 transition-all duration-300 ${searchFocused ? 'search-bar-expanded' : 'search-bar-collapsed'}`}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => setSearchFocused(true)}
+                  onBlur={() => setSearchFocused(false)}
+                />
+                <Button type="submit" className="rounded-r-full bg-primary hover:bg-primary/90 transition-all duration-300">
+                  <Search className="h-4 w-4" />
+                </Button>
+              </form>
+            </div>
+          )}
 
           {/* User Actions */}
           <div className="hidden md:flex items-center space-x-3">
@@ -142,6 +144,12 @@ const Navbar = () => {
                     </div>
                   </div>
                   <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile-settings" className="cursor-pointer w-full transition-colors duration-200 hover:bg-muted hover:text-primary">
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>Profile Settings</span>
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link to="/wishlist" className="cursor-pointer w-full transition-colors duration-200 hover:bg-muted hover:text-primary">
                       <Heart className="mr-2 h-4 w-4" />
@@ -228,16 +236,26 @@ const Navbar = () => {
               </Link>
               
               {isLoggedIn ? (
-                <button 
-                  onClick={() => {
-                    handleLogout();
-                    setIsMenuOpen(false);
-                  }}
-                  className="flex items-center text-base font-medium hover:text-primary transition-colors duration-300"
-                >
-                  <LogOut className="h-5 w-5 mr-2" />
-                  Logout ({userName})
-                </button>
+                <>
+                  <Link 
+                    to="/profile-settings" 
+                    className="flex items-center text-base font-medium hover:text-primary transition-colors duration-300"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <Settings className="h-5 w-5 mr-2" />
+                    Profile
+                  </Link>
+                  <button 
+                    onClick={() => {
+                      handleLogout();
+                      setIsMenuOpen(false);
+                    }}
+                    className="flex items-center text-base font-medium hover:text-primary transition-colors duration-300"
+                  >
+                    <LogOut className="h-5 w-5 mr-2" />
+                    Logout
+                  </button>
+                </>
               ) : (
                 <Link 
                   to="/login" 
