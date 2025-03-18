@@ -5,7 +5,7 @@ import { getProductById, getStoreById, isInWishlist, addToWishlist, removeFromWi
 import { Product, Store } from '@/types';
 import { formatPrice } from '@/utils/priceUtils';
 import { useToast } from '@/components/ui/use-toast';
-import { Heart, ExternalLink, ArrowLeft, Star } from 'lucide-react';
+import { Heart, ExternalLink, ArrowLeft, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -18,11 +18,21 @@ import {
 } from "@/components/ui/table";
 import Navbar from '@/components/Navbar';
 
+// Additional images for Robot Vacuum (prod5)
+const productImages = {
+  "prod5": [
+    "https://images.unsplash.com/photo-1600805624740-ebe64a34a3c3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1558317374-067fb5f30001?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1567818668259-e66acbf804b6?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  ]
+};
+
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [inWishlist, setInWishlist] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -32,6 +42,7 @@ const ProductDetail = () => {
       if (foundProduct) {
         setProduct(foundProduct);
         setInWishlist(isInWishlist(foundProduct.id));
+        setCurrentImageIndex(0);
       }
       setIsLoading(false);
     }
@@ -57,6 +68,22 @@ const ProductDetail = () => {
 
   const getStoreInfo = (storeId: string): Store | undefined => {
     return getStoreById(storeId);
+  };
+
+  const getProductImages = (productId: string): string[] => {
+    return productImages[productId as keyof typeof productImages] || [product?.imageUrl || ''];
+  };
+
+  const nextImage = () => {
+    if (!product) return;
+    const images = getProductImages(product.id);
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    if (!product) return;
+    const images = getProductImages(product.id);
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
   if (isLoading) {
@@ -91,6 +118,7 @@ const ProductDetail = () => {
   // Sort prices from lowest to highest
   const sortedPrices = [...product.prices].sort((a, b) => a.price - b.price);
   const lowestPrice = sortedPrices[0];
+  const images = getProductImages(product.id);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -103,19 +131,65 @@ const ProductDetail = () => {
         
         <div className="bg-white rounded-lg shadow-sm overflow-hidden p-4 md:p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Product Image */}
+            {/* Product Image Gallery */}
             <div className="relative">
-              <img 
-                src={product.imageUrl} 
-                alt={product.name} 
-                className="w-full object-cover rounded-lg"
-              />
-              {product.rating && (
-                <div className="absolute top-4 right-4">
-                  <Badge className="bg-primary">
-                    <Star className="h-4 w-4 mr-1 fill-current" />
-                    {product.rating.toFixed(1)}
-                  </Badge>
+              <div className="relative aspect-square overflow-hidden rounded-lg">
+                <img 
+                  src={images[currentImageIndex]} 
+                  alt={product.name} 
+                  className="w-full h-full object-cover rounded-lg"
+                />
+                
+                {/* Image navigation buttons */}
+                {images.length > 1 && (
+                  <>
+                    <Button 
+                      variant="ghost" 
+                      size="icon"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full"
+                      onClick={prevImage}
+                    >
+                      <ChevronLeft className="h-6 w-6" />
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="icon"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full"
+                      onClick={nextImage}
+                    >
+                      <ChevronRight className="h-6 w-6" />
+                    </Button>
+                  </>
+                )}
+                
+                {product.rating && (
+                  <div className="absolute top-4 right-4">
+                    <Badge className="bg-primary">
+                      <Star className="h-4 w-4 mr-1 fill-current" />
+                      {product.rating.toFixed(1)}
+                    </Badge>
+                  </div>
+                )}
+              </div>
+              
+              {/* Thumbnail navigation */}
+              {images.length > 1 && (
+                <div className="flex justify-center mt-4 gap-2">
+                  {images.map((img, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`w-16 h-16 rounded-md overflow-hidden border-2 transition-all ${
+                        currentImageIndex === index ? 'border-primary' : 'border-transparent'
+                      }`}
+                    >
+                      <img 
+                        src={img} 
+                        alt={`${product.name} - view ${index + 1}`} 
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
                 </div>
               )}
             </div>

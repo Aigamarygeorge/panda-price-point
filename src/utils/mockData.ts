@@ -1,4 +1,3 @@
-
 import { Product, Store } from "@/types";
 
 export const stores: Store[] = [
@@ -211,9 +210,9 @@ export const products: Product[] = [
   {
     id: "prod5",
     name: "Robot Vacuum Cleaner",
-    description: "Smart robot vacuum with mapping technology, app control, and automatic recharging.",
+    description: "Smart robot vacuum with mapping technology, app control, and automatic recharging. Features powerful suction and advanced navigation to efficiently clean your home.",
     category: "Home Appliances",
-    imageUrl: "https://placehold.co/600x400/2D9858/FFFFFF?text=Robot+Vacuum",
+    imageUrl: "https://images.unsplash.com/photo-1600805624740-ebe64a34a3c3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     brand: "CleanTech",
     model: "RV-2000",
     prices: [
@@ -223,7 +222,7 @@ export const products: Product[] = [
         price: 299.99,
         currency: "USD",
         priceDate: "2023-05-14",
-        url: "https://techhaven.example.com/products/rv-2000",
+        url: "https://www.amazon.com/robot-vacuum-cleaners/s?k=robot+vacuum+cleaners",
       },
       {
         id: "price14",
@@ -231,7 +230,7 @@ export const products: Product[] = [
         price: 329.99,
         currency: "USD",
         priceDate: "2023-05-16",
-        url: "https://gadgetgalaxy.example.com/products/rv-2000",
+        url: "https://www.bestbuy.com/site/searchpage.jsp?st=robot+vacuum",
       },
       {
         id: "price15",
@@ -239,7 +238,7 @@ export const products: Product[] = [
         price: 289.99,
         currency: "USD",
         priceDate: "2023-05-15",
-        url: "https://buymore.example.com/products/rv-2000",
+        url: "https://www.walmart.com/browse/home-improvement/robot-vacuums/1072864_1231154_9657831",
       },
     ],
     features: [
@@ -248,6 +247,10 @@ export const products: Product[] = [
       "App control",
       "Automatic recharging",
       "HEPA filtration",
+      "90-minute runtime per charge",
+      "Automatic dirt detection",
+      "Virtual boundaries setup",
+      "Low-profile design for under furniture"
     ],
     rating: 4.4,
     reviewCount: 187,
