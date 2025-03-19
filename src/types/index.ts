@@ -35,6 +35,11 @@ export interface WishlistItem {
   dateAdded: string;
 }
 
+export interface ViewedProduct {
+  productId: string;
+  viewedAt: string;
+}
+
 export interface User {
   id: string;
   name: string;

@@ -1,13 +1,21 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Heart } from 'lucide-react';
+import { Heart, BarChart2 } from 'lucide-react';
 import { Product } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { formatPrice, findLowestPrice, findHighestPrice } from '@/utils/priceUtils';
-import { addToWishlist, removeFromWishlist, isInWishlist } from '@/utils/mockData';
+import { 
+  addToWishlist, 
+  removeFromWishlist, 
+  isInWishlist, 
+  addToCompareList, 
+  isInCompareList,
+  addToViewedProducts
+} from '@/utils/mockData';
 import { useToast } from '@/components/ui/use-toast';
 
 interface ProductCardProps {
@@ -19,13 +27,17 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product, className = '', index = 0 }) =>  {
   const { toast } = useToast();
   const [inWishlist, setInWishlist] = React.useState(isInWishlist(product.id));
+  const [inCompareList, setInCompareList] = React.useState(isInCompareList(product.id));
   const [animate, setAnimate] = React.useState(false);
 
   const lowestPrice = findLowestPrice(product.prices);
   const highestPrice = findHighestPrice(product.prices);
   const hasPriceRange = lowestPrice !== highestPrice;
 
-  const toggleWishlist = () => {
+  const toggleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent link navigation
+    e.stopPropagation();
+    
     if (inWishlist) {
       removeFromWishlist(product.id);
       setInWishlist(false);
@@ -43,9 +55,25 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className = '', inde
     }
   };
 
+  const handleCompareClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    addToCompareList(product.id);
+    setInCompareList(true);
+    toast({
+      description: "Added to compare list",
+    });
+  };
+
+  const handleProductClick = () => {
+    // Record this product as viewed
+    addToViewedProducts(product.id);
+  };
+
   return (
     <Card className={`product-card stagger-item scale-in hover-lift ${className}`} style={{ animationDelay: `${0.05 + index * 0.05}s` }}>
-      <Link to={`/product/${product.id}`}>
+      <Link to={`/product/${product.id}`} onClick={handleProductClick}>
         <div className="relative aspect-square overflow-hidden">
           <img
             src={product.imageUrl}
@@ -62,19 +90,48 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className = '', inde
 
       <CardContent className="p-4">
         <div className="flex justify-between items-start mb-2">
-          <Link to={`/product/${product.id}`} className="flex-1">
+          <Link to={`/product/${product.id}`} className="flex-1" onClick={handleProductClick}>
             <h3 className="font-semibold text-lg line-clamp-2 hover:text-primary transition-colors">
               {product.name}
             </h3>
           </Link>
-          <Button
-            variant="ghost"
-            size="icon"
-            className={`ml-2 heart-favorite ${inWishlist ? 'text-primary' : ''} ${animate ? 'animate-heart-pulse' : ''}`}
-            onClick={toggleWishlist}
-          >
-            <Heart className={`h-5 w-5 ${inWishlist ? 'fill-current' : ''}`} />
-          </Button>
+          <div className="flex gap-1">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className={`heart-favorite ${inWishlist ? 'text-primary' : ''} ${animate ? 'animate-heart-pulse' : ''}`}
+                    onClick={toggleWishlist}
+                  >
+                    <Heart className={`h-5 w-5 ${inWishlist ? 'fill-current' : ''}`} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className={`${inCompareList ? 'text-primary' : ''}`}
+                    onClick={handleCompareClick}
+                  >
+                    <BarChart2 className="h-5 w-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  Add to compare
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </div>
 
         <p className="text-sm text-muted-foreground mb-2">{product.brand}</p>
@@ -101,7 +158,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className = '', inde
       </CardContent>
 
       <CardFooter className="p-4 pt-0">
-        <Link to={`/product/${product.id}`} className="w-full">
+        <Link to={`/product/${product.id}`} className="w-full" onClick={handleProductClick}>
           <Button className="w-full btn-hover-effect transition-all duration-300 hover:bg-primary/90">
             Compare Prices
           </Button>

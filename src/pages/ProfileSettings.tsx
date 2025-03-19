@@ -5,10 +5,9 @@ import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
-import { User, Mail, Lock, Save, UserCircle, Camera } from 'lucide-react';
+import { User, Mail, Lock, Save, UserCircle, Camera, ShoppingBag, Eye, Heart } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 const ProfileSettings = () => {
   const navigate = useNavigate();
@@ -21,6 +20,7 @@ const ProfileSettings = () => {
     password: '',
     confirmPassword: '',
   });
+  const [viewedProducts, setViewedProducts] = useState<number>(0);
 
   useEffect(() => {
     // Check login status
@@ -44,6 +44,17 @@ const ProfileSettings = () => {
     });
     
     setAvatarUrl(userAvatar);
+    
+    // Load viewed products count
+    const viewed = localStorage.getItem('viewedProducts');
+    if (viewed) {
+      try {
+        const parsedViewed = JSON.parse(viewed);
+        setViewedProducts(Array.isArray(parsedViewed) ? parsedViewed.length : 0);
+      } catch (e) {
+        setViewedProducts(0);
+      }
+    }
   }, [navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -250,7 +261,10 @@ const ProfileSettings = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Card>
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Wishlist Items</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
+                    <Heart className="h-4 w-4 mr-2 text-red-400" />
+                    Wishlist Items
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-2xl font-bold">{localStorage.getItem('wishlist') ? JSON.parse(localStorage.getItem('wishlist') || '[]').length : 0}</p>
@@ -258,18 +272,24 @@ const ProfileSettings = () => {
               </Card>
               <Card>
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Viewed Products</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
+                    <Eye className="h-4 w-4 mr-2 text-blue-400" />
+                    Viewed Products
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-2xl font-bold">0</p>
+                  <p className="text-2xl font-bold">{viewedProducts}</p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Compare Lists</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
+                    <ShoppingBag className="h-4 w-4 mr-2 text-green-400" />
+                    Compare Lists
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-2xl font-bold">0</p>
+                  <p className="text-2xl font-bold">{localStorage.getItem('compareLists') ? JSON.parse(localStorage.getItem('compareLists') || '[]').length : 0}</p>
                 </CardContent>
               </Card>
             </div>

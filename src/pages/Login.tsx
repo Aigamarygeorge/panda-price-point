@@ -21,6 +21,7 @@ const Login = () => {
     if (email && password) {
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userName', email.split('@')[0]);
+      localStorage.setItem('userEmail', email);
       toast({
         title: "Login successful",
         description: "Welcome back to PricePanda!",
@@ -41,6 +42,7 @@ const Login = () => {
     if (email && password && name) {
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userName', name);
+      localStorage.setItem('userEmail', email);
       toast({
         title: "Sign up successful",
         description: "Welcome to PricePanda!",

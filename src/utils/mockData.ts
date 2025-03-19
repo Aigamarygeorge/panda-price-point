@@ -1,29 +1,29 @@
-import { Product, Store } from "@/types";
+import { Product, Store, ViewedProduct } from "@/types";
 
 export const stores: Store[] = [
   {
     id: "store1",
     name: "ElectroMart",
     logo: "electromart.png",
-    website: "https://electromart.example.com",
+    website: "https://www.amazon.com",
   },
   {
     id: "store2",
     name: "TechHaven",
     logo: "techhaven.png",
-    website: "https://techhaven.example.com",
+    website: "https://www.bestbuy.com",
   },
   {
     id: "store3",
     name: "GadgetGalaxy",
     logo: "gadgetgalaxy.png",
-    website: "https://gadgetgalaxy.example.com",
+    website: "https://www.walmart.com",
   },
   {
     id: "store4",
     name: "BuyMore",
     logo: "buymore.png",
-    website: "https://buymore.example.com",
+    website: "https://www.target.com",
   },
 ];
 
@@ -33,7 +33,7 @@ export const products: Product[] = [
     name: "Ultra HD Smart TV 55\"",
     description: "55-inch 4K Ultra HD Smart LED TV with HDR and built-in voice assistant.",
     category: "Electronics",
-    imageUrl: "https://placehold.co/600x400/2D9858/FFFFFF?text=Ultra+HD+TV",
+    imageUrl: "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?q=80&w=2070&auto=format&fit=crop",
     brand: "TechVision",
     model: "TV55-4000",
     prices: [
@@ -43,7 +43,7 @@ export const products: Product[] = [
         price: 699.99,
         currency: "USD",
         priceDate: "2023-05-15",
-        url: "https://electromart.example.com/products/tv55-4000",
+        url: "https://www.amazon.com/s?k=4k+smart+tv+55+inch",
       },
       {
         id: "price2",
@@ -51,7 +51,7 @@ export const products: Product[] = [
         price: 729.99,
         currency: "USD",
         priceDate: "2023-05-15",
-        url: "https://techhaven.example.com/products/tv55-4000",
+        url: "https://www.bestbuy.com/site/tvs/55-inch-tvs/pcmcat1514910595284.c?id=pcmcat1514910595284",
       },
       {
         id: "price3",
@@ -59,7 +59,7 @@ export const products: Product[] = [
         price: 679.99,
         currency: "USD",
         priceDate: "2023-05-16",
-        url: "https://gadgetgalaxy.example.com/products/tv55-4000",
+        url: "https://www.walmart.com/browse/electronics/55-inch-tvs/3944_1060825_2489948_9359064",
       },
     ],
     features: [
@@ -77,7 +77,7 @@ export const products: Product[] = [
     name: "Wireless Noise-Cancelling Headphones",
     description: "Premium wireless over-ear headphones with active noise cancellation and 30-hour battery life.",
     category: "Audio",
-    imageUrl: "https://placehold.co/600x400/2D9858/FFFFFF?text=Headphones",
+    imageUrl: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=2065&auto=format&fit=crop",
     brand: "SoundMaster",
     model: "NC-800",
     prices: [
@@ -87,7 +87,7 @@ export const products: Product[] = [
         price: 249.99,
         currency: "USD",
         priceDate: "2023-05-15",
-        url: "https://electromart.example.com/products/nc-800",
+        url: "https://www.amazon.com/s?k=noise+cancelling+headphones",
       },
       {
         id: "price5",
@@ -95,7 +95,7 @@ export const products: Product[] = [
         price: 229.99,
         currency: "USD",
         priceDate: "2023-05-15",
-        url: "https://techhaven.example.com/products/nc-800",
+        url: "https://www.bestbuy.com/site/headphones/noise-canceling-headphones/pcmcat177600050009.c?id=pcmcat177600050009",
       },
       {
         id: "price6",
@@ -103,7 +103,7 @@ export const products: Product[] = [
         price: 259.99,
         currency: "USD",
         priceDate: "2023-05-16",
-        url: "https://buymore.example.com/products/nc-800",
+        url: "https://www.target.com/c/headphones-speakers-electronics/noise-canceling-headphones/-/N-5xtfmZ5xu36",
       },
     ],
     features: [
@@ -122,7 +122,7 @@ export const products: Product[] = [
     name: "Professional Blender 1500W",
     description: "High-performance 1500W blender with multiple speed settings and durable stainless steel blades.",
     category: "Kitchen Appliances",
-    imageUrl: "https://placehold.co/600x400/2D9858/FFFFFF?text=Blender",
+    imageUrl: "https://images.unsplash.com/photo-1570222094114-d054a817e56b?q=80&w=2105&auto=format&fit=crop",
     brand: "KitchenPro",
     model: "BL-1500X",
     prices: [
@@ -132,7 +132,7 @@ export const products: Product[] = [
         price: 129.99,
         currency: "USD",
         priceDate: "2023-05-14",
-        url: "https://gadgetgalaxy.example.com/products/bl-1500x",
+        url: "https://www.walmart.com/browse/home/blenders/4044_90548_90546_4291",
       },
       {
         id: "price8",
@@ -140,7 +140,7 @@ export const products: Product[] = [
         price: 119.99,
         currency: "USD",
         priceDate: "2023-05-15",
-        url: "https://buymore.example.com/products/bl-1500x",
+        url: "https://www.target.com/c/blenders-mixers-kitchen-appliances/-/N-5xtrc",
       },
     ],
     features: [
@@ -159,7 +159,7 @@ export const products: Product[] = [
     name: "Smartphone XL Pro",
     description: "Latest flagship smartphone with 6.7-inch OLED display, 5G capability, and advanced camera system.",
     category: "Smartphones",
-    imageUrl: "https://placehold.co/600x400/2D9858/FFFFFF?text=Smartphone",
+    imageUrl: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?q=80&w=2127&auto=format&fit=crop",
     brand: "TechGiant",
     model: "XL Pro",
     prices: [
@@ -169,7 +169,7 @@ export const products: Product[] = [
         price: 999.99,
         currency: "USD",
         priceDate: "2023-05-16",
-        url: "https://electromart.example.com/products/xl-pro",
+        url: "https://www.amazon.com/s?k=flagship+smartphone",
       },
       {
         id: "price10",
@@ -177,7 +177,7 @@ export const products: Product[] = [
         price: 979.99,
         currency: "USD",
         priceDate: "2023-05-15",
-        url: "https://techhaven.example.com/products/xl-pro",
+        url: "https://www.bestbuy.com/site/mobile-cell-phones/unlocked-mobile-phones/pcmcat156400050037.c?id=pcmcat156400050037",
       },
       {
         id: "price11",
@@ -185,7 +185,7 @@ export const products: Product[] = [
         price: 989.99,
         currency: "USD",
         priceDate: "2023-05-16",
-        url: "https://gadgetgalaxy.example.com/products/xl-pro",
+        url: "https://www.walmart.com/browse/electronics/unlocked-cell-phones/3944_542371_1073085",
       },
       {
         id: "price12",
@@ -193,7 +193,7 @@ export const products: Product[] = [
         price: 949.99,
         currency: "USD",
         priceDate: "2023-05-15",
-        url: "https://buymore.example.com/products/xl-pro",
+        url: "https://www.target.com/c/cell-phones-electronics/-/N-5xted",
       },
     ],
     features: [
@@ -212,7 +212,7 @@ export const products: Product[] = [
     name: "Robot Vacuum Cleaner",
     description: "Smart robot vacuum with mapping technology, app control, and automatic recharging. Features powerful suction and advanced navigation to efficiently clean your home.",
     category: "Home Appliances",
-    imageUrl: "https://images.unsplash.com/photo-1600805624740-ebe64a34a3c3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    imageUrl: "https://images.unsplash.com/photo-1600805624740-ebe64a34a3c3?q=80&w=2070&auto=format&fit=crop",
     brand: "CleanTech",
     model: "RV-2000",
     prices: [
@@ -261,7 +261,7 @@ export const products: Product[] = [
     name: "Fitness Smartwatch",
     description: "Advanced fitness tracker with heart rate monitoring, GPS, and 7-day battery life.",
     category: "Wearables",
-    imageUrl: "https://placehold.co/600x400/2D9858/FFFFFF?text=Smartwatch",
+    imageUrl: "https://images.unsplash.com/photo-1517420879524-86d64ac2f339?q=80&w=2426&auto=format&fit=crop",
     brand: "FitTech",
     model: "Watch Pro",
     prices: [
@@ -271,7 +271,7 @@ export const products: Product[] = [
         price: 159.99,
         currency: "USD",
         priceDate: "2023-05-15",
-        url: "https://electromart.example.com/products/watch-pro",
+        url: "https://www.amazon.com/s?k=fitness+smartwatch",
       },
       {
         id: "price17",
@@ -279,7 +279,7 @@ export const products: Product[] = [
         price: 149.99,
         currency: "USD",
         priceDate: "2023-05-16",
-        url: "https://gadgetgalaxy.example.com/products/watch-pro",
+        url: "https://www.walmart.com/browse/electronics/smart-watches/3944_3951_1229723_8140089",
       },
     ],
     features: [
@@ -294,6 +294,26 @@ export const products: Product[] = [
     dateAdded: "2023-03-15",
   },
 ];
+
+export const initializeDatabase = () => {
+  // Initialize wishlist if it doesn't exist
+  if (!localStorage.getItem('wishlist')) {
+    localStorage.setItem('wishlist', JSON.stringify([]));
+  }
+  
+  // Initialize viewed products if it doesn't exist
+  if (!localStorage.getItem('viewedProducts')) {
+    localStorage.setItem('viewedProducts', JSON.stringify([]));
+  }
+  
+  // Initialize compare lists if it doesn't exist
+  if (!localStorage.getItem('compareLists')) {
+    localStorage.setItem('compareLists', JSON.stringify([]));
+  }
+};
+
+// Call initialization on import
+initializeDatabase();
 
 export const getProductById = (id: string): Product | undefined => {
   return products.find(product => product.id === id);
@@ -316,29 +336,130 @@ export const searchProducts = (query: string): Product[] => {
   );
 };
 
-const initialWishlist: string[] = [];
-
+// Wishlist Functions
 export const getWishlist = (): string[] => {
-  const savedWishlist = localStorage.getItem('wishlist');
-  return savedWishlist ? JSON.parse(savedWishlist) : initialWishlist;
+  try {
+    const savedWishlist = localStorage.getItem('wishlist');
+    return savedWishlist ? JSON.parse(savedWishlist) : [];
+  } catch (e) {
+    console.error("Error loading wishlist:", e);
+    return [];
+  }
 };
 
 export const addToWishlist = (productId: string): void => {
-  const wishlist = getWishlist();
-  if (!wishlist.includes(productId)) {
-    wishlist.push(productId);
-    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+  try {
+    const wishlist = getWishlist();
+    if (!wishlist.includes(productId)) {
+      wishlist.push(productId);
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    }
+  } catch (e) {
+    console.error("Error adding to wishlist:", e);
   }
 };
 
 export const removeFromWishlist = (productId: string): void => {
-  let wishlist = getWishlist();
-  wishlist = wishlist.filter(id => id !== productId);
-  localStorage.setItem('wishlist', JSON.stringify(wishlist));
+  try {
+    let wishlist = getWishlist();
+    wishlist = wishlist.filter(id => id !== productId);
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+  } catch (e) {
+    console.error("Error removing from wishlist:", e);
+  }
 };
 
 export const isInWishlist = (productId: string): boolean => {
-  return getWishlist().includes(productId);
+  try {
+    return getWishlist().includes(productId);
+  } catch (e) {
+    console.error("Error checking wishlist:", e);
+    return false;
+  }
+};
+
+// Viewed Products Functions
+export const addToViewedProducts = (productId: string): void => {
+  try {
+    const viewedProducts = getViewedProducts();
+    
+    // Check if already in viewed
+    const existingIndex = viewedProducts.findIndex(item => item.productId === productId);
+    
+    // If exists, update viewed date and move to top
+    if (existingIndex > -1) {
+      viewedProducts.splice(existingIndex, 1);
+    }
+    
+    // Add to beginning of array (most recent)
+    viewedProducts.unshift({
+      productId,
+      viewedAt: new Date().toISOString()
+    });
+    
+    // Keep only last 20 viewed products
+    const trimmedList = viewedProducts.slice(0, 20);
+    
+    localStorage.setItem('viewedProducts', JSON.stringify(trimmedList));
+  } catch (e) {
+    console.error("Error adding to viewed products:", e);
+  }
+};
+
+export const getViewedProducts = (): ViewedProduct[] => {
+  try {
+    const saved = localStorage.getItem('viewedProducts');
+    return saved ? JSON.parse(saved) : [];
+  } catch (e) {
+    console.error("Error getting viewed products:", e);
+    return [];
+  }
+};
+
+// Compare Lists Functions
+export const addToCompareList = (productId: string): void => {
+  try {
+    const compareLists = getCompareLists();
+    if (!compareLists.includes(productId)) {
+      // Only allow up to 4 products in compare list
+      if (compareLists.length >= 4) {
+        compareLists.pop(); // Remove oldest item
+      }
+      compareLists.unshift(productId); // Add to beginning
+      localStorage.setItem('compareLists', JSON.stringify(compareLists));
+    }
+  } catch (e) {
+    console.error("Error adding to compare list:", e);
+  }
+};
+
+export const removeFromCompareList = (productId: string): void => {
+  try {
+    let compareLists = getCompareLists();
+    compareLists = compareLists.filter(id => id !== productId);
+    localStorage.setItem('compareLists', JSON.stringify(compareLists));
+  } catch (e) {
+    console.error("Error removing from compare list:", e);
+  }
+};
+
+export const getCompareLists = (): string[] => {
+  try {
+    const saved = localStorage.getItem('compareLists');
+    return saved ? JSON.parse(saved) : [];
+  } catch (e) {
+    console.error("Error getting compare lists:", e);
+    return [];
+  }
+};
+
+export const isInCompareList = (productId: string): boolean => {
+  try {
+    return getCompareLists().includes(productId);
+  } catch (e) {
+    console.error("Error checking compare list:", e);
+    return false;
+  }
 };
 
 export const getDeals = (): Product[] => {
