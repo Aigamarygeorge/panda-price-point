@@ -28,6 +28,7 @@ export interface Product {
   rating?: number;
   reviewCount?: number;
   dateAdded: string;
+  additionalImages?: string[]; // Added field for multiple product images
 }
 
 export interface WishlistItem {
