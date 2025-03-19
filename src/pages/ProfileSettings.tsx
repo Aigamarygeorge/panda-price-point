@@ -5,9 +5,9 @@ import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
-import { User, Mail, Lock, Save, UserCircle, Camera, ShoppingBag, Eye, Heart } from 'lucide-react';
+import { User, Mail, Lock, Save, Camera, ShoppingBag, Eye, Heart } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const ProfileSettings = () => {
   const navigate = useNavigate();
@@ -21,6 +21,8 @@ const ProfileSettings = () => {
     confirmPassword: '',
   });
   const [viewedProducts, setViewedProducts] = useState<number>(0);
+  const [wishlistCount, setWishlistCount] = useState<number>(0);
+  const [compareListsCount, setCompareListsCount] = useState<number>(0);
 
   useEffect(() => {
     // Check login status
@@ -45,6 +47,11 @@ const ProfileSettings = () => {
     
     setAvatarUrl(userAvatar);
     
+    // Load statistics data
+    loadUserStatistics();
+  }, [navigate]);
+
+  const loadUserStatistics = () => {
     // Load viewed products count
     const viewed = localStorage.getItem('viewedProducts');
     if (viewed) {
@@ -55,7 +62,29 @@ const ProfileSettings = () => {
         setViewedProducts(0);
       }
     }
-  }, [navigate]);
+
+    // Load wishlist count
+    const wishlist = localStorage.getItem('wishlist');
+    if (wishlist) {
+      try {
+        const parsedWishlist = JSON.parse(wishlist);
+        setWishlistCount(Array.isArray(parsedWishlist) ? parsedWishlist.length : 0);
+      } catch (e) {
+        setWishlistCount(0);
+      }
+    }
+
+    // Load compare lists count
+    const compareLists = localStorage.getItem('compareLists');
+    if (compareLists) {
+      try {
+        const parsedCompareLists = JSON.parse(compareLists);
+        setCompareListsCount(Array.isArray(parsedCompareLists) ? parsedCompareLists.length : 0);
+      } catch (e) {
+        setCompareListsCount(0);
+      }
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -267,7 +296,7 @@ const ProfileSettings = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-2xl font-bold">{localStorage.getItem('wishlist') ? JSON.parse(localStorage.getItem('wishlist') || '[]').length : 0}</p>
+                  <p className="text-2xl font-bold">{wishlistCount}</p>
                 </CardContent>
               </Card>
               <Card>
@@ -289,7 +318,7 @@ const ProfileSettings = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-2xl font-bold">{localStorage.getItem('compareLists') ? JSON.parse(localStorage.getItem('compareLists') || '[]').length : 0}</p>
+                  <p className="text-2xl font-bold">{compareListsCount}</p>
                 </CardContent>
               </Card>
             </div>
