@@ -1,6 +1,5 @@
-
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getProductById, getStoreById, isInWishlist, addToWishlist, removeFromWishlist } from '@/utils/mockData';
 import { Product, Store } from '@/types';
 import { formatPrice } from '@/utils/priceUtils';
@@ -18,15 +17,6 @@ import {
 } from "@/components/ui/table";
 import Navbar from '@/components/Navbar';
 
-// Additional images for Robot Vacuum (prod5)
-const productImages = {
-  "prod5": [
-    "https://images.unsplash.com/photo-1600805624740-ebe64a34a3c3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1558317374-067fb5f30001?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1567818668259-e66acbf804b6?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-  ]
-};
-
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
@@ -34,6 +24,7 @@ const ProductDetail = () => {
   const [inWishlist, setInWishlist] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (id) {
@@ -51,18 +42,33 @@ const ProductDetail = () => {
   const toggleWishlist = () => {
     if (!product) return;
     
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
+      toast({
+        title: "Login Required",
+        description: "Please log in to add items to your wishlist",
+        variant: "destructive",
+      });
+      navigate('/login');
+      return;
+    }
+    
     if (inWishlist) {
-      removeFromWishlist(product.id);
-      setInWishlist(false);
-      toast({
-        description: "Removed from wishlist",
-      });
+      const success = removeFromWishlist(product.id);
+      if (success) {
+        setInWishlist(false);
+        toast({
+          description: "Removed from wishlist",
+        });
+      }
     } else {
-      addToWishlist(product.id);
-      setInWishlist(true);
-      toast({
-        description: "Added to wishlist",
-      });
+      const success = addToWishlist(product.id);
+      if (success) {
+        setInWishlist(true);
+        toast({
+          description: "Added to wishlist",
+        });
+      }
     }
   };
 
@@ -70,19 +76,22 @@ const ProductDetail = () => {
     return getStoreById(storeId);
   };
 
-  const getProductImages = (productId: string): string[] => {
-    return productImages[productId as keyof typeof productImages] || [product?.imageUrl || ''];
+  const getProductImages = (product: Product): string[] => {
+    if (product.additionalImages && product.additionalImages.length > 0) {
+      return [product.imageUrl, ...product.additionalImages];
+    }
+    return [product.imageUrl];
   };
 
   const nextImage = () => {
     if (!product) return;
-    const images = getProductImages(product.id);
+    const images = getProductImages(product);
     setCurrentImageIndex((prev) => (prev + 1) % images.length);
   };
 
   const prevImage = () => {
     if (!product) return;
-    const images = getProductImages(product.id);
+    const images = getProductImages(product);
     setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
@@ -115,10 +124,9 @@ const ProductDetail = () => {
     );
   }
 
-  // Sort prices from lowest to highest
   const sortedPrices = [...product.prices].sort((a, b) => a.price - b.price);
   const lowestPrice = sortedPrices[0];
-  const images = getProductImages(product.id);
+  const images = getProductImages(product);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -131,7 +139,6 @@ const ProductDetail = () => {
         
         <div className="bg-white rounded-lg shadow-sm overflow-hidden p-4 md:p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Product Image Gallery */}
             <div className="relative">
               <div className="relative aspect-square overflow-hidden rounded-lg">
                 <img 
@@ -140,7 +147,6 @@ const ProductDetail = () => {
                   className="w-full h-full object-cover rounded-lg"
                 />
                 
-                {/* Image navigation buttons */}
                 {images.length > 1 && (
                   <>
                     <Button 
@@ -172,7 +178,6 @@ const ProductDetail = () => {
                 )}
               </div>
               
-              {/* Thumbnail navigation */}
               {images.length > 1 && (
                 <div className="flex justify-center mt-4 gap-2">
                   {images.map((img, index) => (
@@ -194,7 +199,6 @@ const ProductDetail = () => {
               )}
             </div>
             
-            {/* Product Details */}
             <div>
               <div className="flex justify-between items-start mb-4">
                 <div>
@@ -247,7 +251,6 @@ const ProductDetail = () => {
           </div>
         </div>
         
-        {/* Price Comparison Table */}
         <div className="bg-white rounded-lg shadow-sm overflow-hidden p-4 md:p-6 mb-8">
           <h2 className="text-xl font-semibold mb-4">Compare Prices</h2>
           <div className="overflow-x-auto">
@@ -299,7 +302,6 @@ const ProductDetail = () => {
           </div>
         </div>
         
-        {/* Features Section */}
         {product.features && product.features.length > 0 && (
           <div className="bg-white rounded-lg shadow-sm overflow-hidden p-4 md:p-6 mb-8">
             <h2 className="text-xl font-semibold mb-4">Features</h2>

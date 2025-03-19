@@ -1,4 +1,3 @@
-
 import { Product, Store, ViewedProduct } from "@/types";
 
 export const stores: Store[] = [
@@ -31,12 +30,12 @@ export const stores: Store[] = [
 export const products: Product[] = [
   {
     id: "prod1",
-    name: "Ultra HD Smart TV 55\"",
+    name: "LG Ultra HD Smart TV 55\"",
     description: "55-inch 4K Ultra HD Smart LED TV with HDR and built-in voice assistant.",
     category: "Electronics",
     imageUrl: "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?q=80&w=2070&auto=format&fit=crop",
-    brand: "TechVision",
-    model: "TV55-4000",
+    brand: "LG",
+    model: "55NANO80",
     prices: [
       {
         id: "price1",
@@ -44,7 +43,7 @@ export const products: Product[] = [
         price: 699.99,
         currency: "USD",
         priceDate: "2023-05-15",
-        url: "https://www.amazon.com/s?k=4k+smart+tv+55+inch",
+        url: "https://www.amazon.com/LG-55NANO80UQA-Alexa-Built-NanoCell/dp/B09ZQDH9DJ/",
       },
       {
         id: "price2",
@@ -52,7 +51,7 @@ export const products: Product[] = [
         price: 729.99,
         currency: "USD",
         priceDate: "2023-05-15",
-        url: "https://www.bestbuy.com/site/tvs/55-inch-tvs/pcmcat1514910595284.c?id=pcmcat1514910595284",
+        url: "https://www.bestbuy.com/site/lg-55-class-nanocell-80-series-led-4k-uhd-smart-webos-tv/6501921.p",
       },
       {
         id: "price3",
@@ -60,7 +59,7 @@ export const products: Product[] = [
         price: 679.99,
         currency: "USD",
         priceDate: "2023-05-16",
-        url: "https://www.walmart.com/browse/electronics/55-inch-tvs/3944_1060825_2489948_9359064",
+        url: "https://www.walmart.com/ip/LG-55-Class-4K-UHD-2160P-webOS-Smart-TV-55UQ7570PUJ/148369083",
       },
     ],
     features: [
@@ -75,12 +74,12 @@ export const products: Product[] = [
   },
   {
     id: "prod2",
-    name: "Wireless Noise-Cancelling Headphones",
+    name: "Sony WH-1000XM4 Wireless Headphones",
     description: "Premium wireless over-ear headphones with active noise cancellation and 30-hour battery life.",
     category: "Audio",
     imageUrl: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=2065&auto=format&fit=crop",
-    brand: "SoundMaster",
-    model: "NC-800",
+    brand: "Sony",
+    model: "WH-1000XM4",
     prices: [
       {
         id: "price4",
@@ -88,7 +87,7 @@ export const products: Product[] = [
         price: 249.99,
         currency: "USD",
         priceDate: "2023-05-15",
-        url: "https://www.amazon.com/s?k=noise+cancelling+headphones",
+        url: "https://www.amazon.com/Sony-WH-1000XM4-Canceling-Headphones-phone-call/dp/B0863TXGM3/",
       },
       {
         id: "price5",
@@ -96,7 +95,7 @@ export const products: Product[] = [
         price: 229.99,
         currency: "USD",
         priceDate: "2023-05-15",
-        url: "https://www.bestbuy.com/site/headphones/noise-canceling-headphones/pcmcat177600050009.c?id=pcmcat177600050009",
+        url: "https://www.bestbuy.com/site/sony-wh-1000xm4-wireless-noise-cancelling-over-the-ear-headphones-black/6408356.p",
       },
       {
         id: "price6",
@@ -104,7 +103,7 @@ export const products: Product[] = [
         price: 259.99,
         currency: "USD",
         priceDate: "2023-05-16",
-        url: "https://www.target.com/c/headphones-speakers-electronics/noise-canceling-headphones/-/N-5xtfmZ5xu36",
+        url: "https://www.target.com/p/sony-wh-1000xm4-noise-canceling-overhead-headphones/-/A-80130244",
       },
     ],
     features: [
@@ -120,35 +119,35 @@ export const products: Product[] = [
   },
   {
     id: "prod3",
-    name: "Professional Blender 1500W",
+    name: "Vitamix E310 Professional Blender",
     description: "High-performance 1500W blender with multiple speed settings and durable stainless steel blades.",
     category: "Kitchen Appliances",
     imageUrl: "https://images.unsplash.com/photo-1570222094114-d054a817e56b?q=80&w=2105&auto=format&fit=crop",
-    brand: "KitchenPro",
-    model: "BL-1500X",
+    brand: "Vitamix",
+    model: "E310",
     prices: [
       {
         id: "price7",
         storeId: "store3",
-        price: 129.99,
+        price: 329.99,
         currency: "USD",
         priceDate: "2023-05-14",
-        url: "https://www.walmart.com/browse/home/blenders/4044_90548_90546_4291",
+        url: "https://www.walmart.com/ip/Vitamix-E310-Explorian-Blender-Black/862255181",
       },
       {
         id: "price8",
         storeId: "store4",
-        price: 119.99,
+        price: 349.99,
         currency: "USD",
         priceDate: "2023-05-15",
-        url: "https://www.target.com/c/blenders-mixers-kitchen-appliances/-/N-5xtrc",
+        url: "https://www.target.com/p/vitamix-explorian-e310-blender-black/-/A-76842945",
       },
     ],
     features: [
       "1500W powerful motor",
       "Variable speed control",
       "Pulse function",
-      "8-cup capacity",
+      "48-oz container",
       "Dishwasher-safe parts",
     ],
     rating: 4.3,
@@ -157,12 +156,12 @@ export const products: Product[] = [
   },
   {
     id: "prod4",
-    name: "Smartphone XL Pro",
+    name: "Apple iPhone 15 Pro",
     description: "Latest flagship smartphone with 6.7-inch OLED display, 5G capability, and advanced camera system.",
     category: "Smartphones",
     imageUrl: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?q=80&w=2127&auto=format&fit=crop",
-    brand: "TechGiant",
-    model: "XL Pro",
+    brand: "Apple",
+    model: "iPhone 15 Pro",
     prices: [
       {
         id: "price9",
@@ -170,7 +169,7 @@ export const products: Product[] = [
         price: 999.99,
         currency: "USD",
         priceDate: "2023-05-16",
-        url: "https://www.amazon.com/s?k=flagship+smartphone",
+        url: "https://www.amazon.com/Apple-iPhone-15-Pro-256GB/dp/B0CHX1K2ZC/",
       },
       {
         id: "price10",
@@ -178,7 +177,7 @@ export const products: Product[] = [
         price: 979.99,
         currency: "USD",
         priceDate: "2023-05-15",
-        url: "https://www.bestbuy.com/site/mobile-cell-phones/unlocked-mobile-phones/pcmcat156400050037.c?id=pcmcat156400050037",
+        url: "https://www.bestbuy.com/site/apple-iphone-15-pro-256gb-natural-titanium-verizon/6525371.p",
       },
       {
         id: "price11",
@@ -186,7 +185,7 @@ export const products: Product[] = [
         price: 989.99,
         currency: "USD",
         priceDate: "2023-05-16",
-        url: "https://www.walmart.com/browse/electronics/unlocked-cell-phones/3944_542371_1073085",
+        url: "https://www.walmart.com/ip/AT-T-Apple-iPhone-15-Pro-256GB-Natural-Titanium/5076504232",
       },
       {
         id: "price12",
@@ -194,7 +193,7 @@ export const products: Product[] = [
         price: 949.99,
         currency: "USD",
         priceDate: "2023-05-15",
-        url: "https://www.target.com/c/cell-phones-electronics/-/N-5xted",
+        url: "https://www.target.com/p/apple-iphone-15-pro/-/A-89308152",
       },
     ],
     features: [
@@ -207,39 +206,48 @@ export const products: Product[] = [
     rating: 4.8,
     reviewCount: 529,
     dateAdded: "2023-05-01",
+    additionalImages: [
+      "https://images.unsplash.com/photo-1696446702213-8424ca03100c?q=80&w=2080&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1695048987437-488323a919b6?q=80&w=1974&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1695048811693-cb2488a186a5?q=80&w=1974&auto=format&fit=crop"
+    ],
   },
   {
     id: "prod5",
-    name: "Robot Vacuum Cleaner",
+    name: "iRobot Roomba i7+ Robot Vacuum",
     description: "Smart robot vacuum with mapping technology, app control, and automatic recharging. Features powerful suction and advanced navigation to efficiently clean your home.",
     category: "Home Appliances",
     imageUrl: "https://images.unsplash.com/photo-1600805624740-ebe64a34a3c3?q=80&w=2070&auto=format&fit=crop",
-    brand: "CleanTech",
-    model: "RV-2000",
+    brand: "iRobot",
+    model: "Roomba i7+",
+    additionalImages: [
+      "https://images.unsplash.com/photo-1558317374-067fb5f30001?q=80&w=2070&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1567818668259-e66acbf804b6?q=80&w=1974&auto=format&fit=crop"
+    ],
     prices: [
       {
         id: "price13",
-        storeId: "store2",
-        price: 299.99,
+        storeId: "store1",
+        price: 699.99,
         currency: "USD",
         priceDate: "2023-05-14",
-        url: "https://www.amazon.com/robot-vacuum-cleaners/s?k=robot+vacuum+cleaners",
+        url: "https://www.amazon.com/iRobot-Roomba-i7-7150-Vacuum-Technology/dp/B08ZDNKM9N/",
       },
       {
         id: "price14",
-        storeId: "store3",
-        price: 329.99,
+        storeId: "store2",
+        price: 729.99,
         currency: "USD",
         priceDate: "2023-05-16",
-        url: "https://www.bestbuy.com/site/searchpage.jsp?st=robot+vacuum",
+        url: "https://www.bestbuy.com/site/irobot-roomba-i7-7150-app-controlled-self-charging-robot-vacuum-black/6561434.p",
       },
       {
         id: "price15",
         storeId: "store4",
-        price: 289.99,
+        price: 649.99,
         currency: "USD",
         priceDate: "2023-05-15",
-        url: "https://www.walmart.com/browse/home-improvement/robot-vacuums/1072864_1231154_9657831",
+        url: "https://www.target.com/p/irobot-roomba-i7-7150-wi-fi-connected-robot-vacuum/-/A-83621797",
       },
     ],
     features: [
@@ -305,7 +313,7 @@ export const products: Product[] = [
       },
     ],
     features: [
-      "1.5" Super AMOLED Display",
+      "1.5\" Super AMOLED Display",
       "Rotating bezel for navigation",
       "BioActive Sensor for health monitoring",
       "Advanced sleep coaching",
@@ -365,6 +373,12 @@ export const searchProducts = (query: string): Product[] => {
 // Wishlist Functions
 export const getWishlist = (): string[] => {
   try {
+    // Check if user is logged in
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
+      return [];
+    }
+    
     const savedWishlist = localStorage.getItem('wishlist');
     return savedWishlist ? JSON.parse(savedWishlist) : [];
   } catch (e) {
@@ -373,30 +387,52 @@ export const getWishlist = (): string[] => {
   }
 };
 
-export const addToWishlist = (productId: string): void => {
+export const addToWishlist = (productId: string): boolean => {
   try {
+    // Check if user is logged in
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
+      return false;
+    }
+    
     const wishlist = getWishlist();
     if (!wishlist.includes(productId)) {
       wishlist.push(productId);
       localStorage.setItem('wishlist', JSON.stringify(wishlist));
     }
+    return true;
   } catch (e) {
     console.error("Error adding to wishlist:", e);
+    return false;
   }
 };
 
-export const removeFromWishlist = (productId: string): void => {
+export const removeFromWishlist = (productId: string): boolean => {
   try {
+    // Check if user is logged in
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
+      return false;
+    }
+    
     let wishlist = getWishlist();
     wishlist = wishlist.filter(id => id !== productId);
     localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    return true;
   } catch (e) {
     console.error("Error removing from wishlist:", e);
+    return false;
   }
 };
 
 export const isInWishlist = (productId: string): boolean => {
   try {
+    // Check if user is logged in
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
+      return false;
+    }
+    
     return getWishlist().includes(productId);
   } catch (e) {
     console.error("Error checking wishlist:", e);

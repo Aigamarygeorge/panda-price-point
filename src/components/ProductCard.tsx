@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Heart, BarChart2 } from 'lucide-react';
 import { Product } from '@/types';
 import { Button } from '@/components/ui/button';
@@ -26,6 +25,7 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, className = '', index = 0 }) =>  {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [inWishlist, setInWishlist] = React.useState(isInWishlist(product.id));
   const [inCompareList, setInCompareList] = React.useState(isInCompareList(product.id));
   const [animate, setAnimate] = React.useState(false);
@@ -38,20 +38,36 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className = '', inde
     e.preventDefault(); // Prevent link navigation
     e.stopPropagation();
     
+    // Check if user is logged in
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
+      toast({
+        title: "Login Required",
+        description: "Please log in to add items to your wishlist",
+        variant: "destructive",
+      });
+      navigate('/login');
+      return;
+    }
+    
     if (inWishlist) {
-      removeFromWishlist(product.id);
-      setInWishlist(false);
-      toast({
-        description: "Removed from wishlist",
-      });
+      const success = removeFromWishlist(product.id);
+      if (success) {
+        setInWishlist(false);
+        toast({
+          description: "Removed from wishlist",
+        });
+      }
     } else {
-      addToWishlist(product.id);
-      setInWishlist(true);
-      setAnimate(true);
-      setTimeout(() => setAnimate(false), 600);
-      toast({
-        description: "Added to wishlist",
-      });
+      const success = addToWishlist(product.id);
+      if (success) {
+        setInWishlist(true);
+        setAnimate(true);
+        setTimeout(() => setAnimate(false), 600);
+        toast({
+          description: "Added to wishlist",
+        });
+      }
     }
   };
 
