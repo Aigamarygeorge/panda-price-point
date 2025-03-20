@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Search, Heart, ShoppingBag, User, Menu, X, LogOut, Settings } from 'lucide-react';
+import { Search, Heart, ShoppingBag, User, Menu, X, LogOut, Settings, GitCompare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -13,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { useToast } from '@/components/ui/use-toast';
+import { getCompareLists } from '@/utils/mockData';
 
 const Navbar = () => {
   const location = useLocation();
@@ -24,15 +24,17 @@ const Navbar = () => {
   const [userName, setUserName] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
+  const [compareCount, setCompareCount] = useState(0);
 
   useEffect(() => {
-    // Check login status from localStorage
     const loginStatus = localStorage.getItem('isLoggedIn') === 'true';
     const name = localStorage.getItem('userName') || '';
     setIsLoggedIn(loginStatus);
     setUserName(name);
 
-    // Add scroll event listener
+    const compareList = getCompareLists();
+    setCompareCount(compareList.length);
+
     const handleScroll = () => {
       if (window.scrollY > 20) {
         setIsScrolled(true);
@@ -43,7 +45,7 @@ const Navbar = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [location]); // Re-check when location changes
+  }, [location]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,7 +71,6 @@ const Navbar = () => {
     navigate('/');
   };
 
-  // Function to handle profile settings navigation
   const goToProfileSettings = () => {
     navigate('/profile-settings');
   };
@@ -78,7 +79,6 @@ const Navbar = () => {
     <nav className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-white'} border-b border-border`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo and Brand */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center group">
               <ShoppingBag className="h-8 w-8 text-primary mr-2 transition-transform group-hover:scale-110 duration-300" />
@@ -88,7 +88,6 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
             <Link 
               to="/" 
@@ -111,7 +110,6 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Search Bar - Only show on non-home pages */}
           {location.pathname !== '/' && (
             <div className="hidden md:flex flex-1 max-w-md mx-4">
               <form onSubmit={handleSearch} className="w-full flex">
@@ -131,10 +129,18 @@ const Navbar = () => {
             </div>
           )}
 
-          {/* User Actions */}
           <div className="hidden md:flex items-center space-x-3">
             <Link to="/wishlist" className="p-2 rounded-full hover:bg-muted transition-colors duration-300 relative">
               <Heart className="h-5 w-5 heart-favorite" />
+            </Link>
+            
+            <Link to="/compare" className="p-2 rounded-full hover:bg-muted transition-colors duration-300 relative">
+              <GitCompare className="h-5 w-5" />
+              {compareCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {compareCount}
+                </span>
+              )}
             </Link>
 
             {isLoggedIn ? (
@@ -161,6 +167,12 @@ const Navbar = () => {
                       <span>Wishlist</span>
                     </Link>
                   </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/compare" className="cursor-pointer w-full transition-colors duration-200 hover:bg-muted hover:text-primary">
+                      <GitCompare className="mr-2 h-4 w-4" />
+                      <span>Compare Products</span>
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout} className="cursor-pointer transition-colors duration-200 hover:bg-red-50 hover:text-destructive">
                     <LogOut className="mr-2 h-4 w-4" />
@@ -175,7 +187,6 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
             <button
               onClick={toggleMenu}
@@ -191,7 +202,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-white shadow-lg border-t border-border slide-in-right">
           <div className="px-4 pt-2 pb-3 space-y-1">
@@ -238,6 +248,20 @@ const Navbar = () => {
               >
                 <Heart className="h-5 w-5 mr-2" />
                 Wishlist
+              </Link>
+              
+              <Link 
+                to="/compare" 
+                className="flex items-center text-base font-medium hover:text-primary transition-colors duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <GitCompare className="h-5 w-5 mr-2" />
+                Compare
+                {compareCount > 0 && (
+                  <span className="ml-1 bg-primary text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                    {compareCount}
+                  </span>
+                )}
               </Link>
               
               {isLoggedIn ? (

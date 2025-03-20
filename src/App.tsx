@@ -1,53 +1,76 @@
+import React from 'react';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import './App.css';
+import { cn } from "@/lib/utils";
+import Index from '@/pages';
+import SearchResults from '@/pages/SearchResults';
+import ProductDetail from '@/pages/ProductDetail';
+import LoginPage from '@/pages/LoginPage';
+import RegisterPage from '@/pages/RegisterPage';
+import WishlistPage from '@/pages/WishlistPage';
+import About from '@/pages/About';
+import Deals from '@/pages/Deals';
+import ProfileSettings from '@/pages/ProfileSettings';
+import { Toaster } from "@/components/ui/toaster"
+import CompareProducts from './pages/CompareProducts';
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import Login from "./pages/Login";
-import Search from "./pages/Search";
-import ProductDetail from "./pages/ProductDetail";
-import Wishlist from "./pages/Wishlist";
-import About from "./pages/About";
-import Deals from "./pages/Deals";
-import ProfileSettings from "./pages/ProfileSettings";
-import Contact from "./pages/Contact";
-import Terms from "./pages/Terms";
-import Privacy from "./pages/Privacy";
+function App() {
+  const className = cn(
+    "min-h-screen antialiased",
+  );
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60 * 1000,
-    },
-  },
-});
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
+  return (
+    <div className={className}>
+      <RouterProvider
+        router={createBrowserRouter([
+          {
+            path: "/",
+            element: <Index />,
+          },
+          {
+            path: "/search",
+            element: <SearchResults />,
+          },
+          {
+            path: "/product/:id",
+            element: <ProductDetail />,
+          },
+          {
+            path: "/login",
+            element: <LoginPage />,
+          },
+          {
+            path: "/register",
+            element: <RegisterPage />,
+          },
+          {
+            path: "/wishlist",
+            element: <WishlistPage />,
+          },
+          {
+            path: "/about",
+            element: <About />,
+          },
+          {
+            path: "/deals",
+            element: <Deals />,
+          },
+          {
+            path: "/profile-settings",
+            element: <ProfileSettings />,
+          },
+          {
+            path: "/compare",
+            element: <CompareProducts />,
+          },
+        ])}
+      />
       <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/deals" element={<Deals />} />
-          <Route path="/profile-settings" element={<ProfileSettings />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+    </div>
+  );
+}
 
 export default App;

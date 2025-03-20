@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Heart, BarChart2 } from 'lucide-react';
+import { Heart, GitCompare } from 'lucide-react';
 import { Product } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -139,7 +140,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className = '', inde
                     className={`${inCompareList ? 'text-primary' : ''}`}
                     onClick={handleCompareClick}
                   >
-                    <BarChart2 className="h-5 w-5" />
+                    <GitCompare className="h-5 w-5" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -174,11 +175,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className = '', inde
       </CardContent>
 
       <CardFooter className="p-4 pt-0">
-        <Link to={`/product/${product.id}`} className="w-full" onClick={handleProductClick}>
-          <Button className="w-full btn-hover-effect transition-all duration-300 hover:bg-primary/90">
-            Compare Prices
-          </Button>
-        </Link>
+        <div className="w-full flex gap-2">
+          <Link to={`/product/${product.id}`} className="flex-grow" onClick={handleProductClick}>
+            <Button variant="default" className="w-full btn-hover-effect transition-all duration-300 hover:bg-primary/90">
+              Compare Prices
+            </Button>
+          </Link>
+          {inCompareList && (
+            <Link to="/compare">
+              <Button variant="outline" className="btn-hover-effect">
+                <GitCompare className="h-4 w-4" />
+              </Button>
+            </Link>
+          )}
+        </div>
       </CardFooter>
     </Card>
   );
