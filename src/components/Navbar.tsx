@@ -69,6 +69,11 @@ const Navbar = () => {
     navigate('/');
   };
 
+  // Function to handle profile settings navigation
+  const goToProfileSettings = () => {
+    navigate('/profile-settings');
+  };
+
   return (
     <nav className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-white'} border-b border-border`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -146,11 +151,9 @@ const Navbar = () => {
                     </div>
                   </div>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link to="/profile-settings" className="cursor-pointer w-full transition-colors duration-200 hover:bg-muted hover:text-primary">
-                      <Settings className="mr-2 h-4 w-4" />
-                      <span>Profile Settings</span>
-                    </Link>
+                  <DropdownMenuItem onClick={goToProfileSettings} className="cursor-pointer w-full transition-colors duration-200 hover:bg-muted hover:text-primary">
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Profile Settings</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link to="/wishlist" className="cursor-pointer w-full transition-colors duration-200 hover:bg-muted hover:text-primary">
@@ -239,14 +242,16 @@ const Navbar = () => {
               
               {isLoggedIn ? (
                 <>
-                  <Link 
-                    to="/profile-settings" 
+                  <button 
+                    onClick={() => {
+                      goToProfileSettings();
+                      setIsMenuOpen(false);
+                    }}
                     className="flex items-center text-base font-medium hover:text-primary transition-colors duration-300"
-                    onClick={() => setIsMenuOpen(false)}
                   >
                     <Settings className="h-5 w-5 mr-2" />
                     Profile
-                  </Link>
+                  </button>
                   <button 
                     onClick={() => {
                       handleLogout();
