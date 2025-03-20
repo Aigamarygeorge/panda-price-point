@@ -18,6 +18,7 @@ import ProfileSettings from './pages/ProfileSettings';
 import { Toaster } from "@/components/ui/toaster";
 import CompareProducts from './pages/CompareProducts';
 import NotFound from './pages/NotFound';
+import Terms from './pages/Terms';
 
 function App() {
   const className = cn(
@@ -67,6 +68,10 @@ function App() {
           {
             path: "/compare",
             element: <CompareProducts />,
+          },
+          {
+            path: "/terms",
+            element: <Terms />,
           },
           {
             path: "*",
