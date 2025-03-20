@@ -11,28 +11,31 @@ export type Database = {
     Tables: {
       prices: {
         Row: {
+          currency: string | null
           id: number
           last_updated: string | null
           price: number
           product_id: number | null
           product_link: string
-          store_name: string
+          store_id: string
         }
         Insert: {
+          currency?: string | null
           id?: number
           last_updated?: string | null
           price: number
           product_id?: number | null
           product_link: string
-          store_name: string
+          store_id: string
         }
         Update: {
+          currency?: string | null
           id?: number
           last_updated?: string | null
           price?: number
           product_id?: number | null
           product_link?: string
-          store_name?: string
+          store_id?: string
         }
         Relationships: [
           {
@@ -46,25 +49,61 @@ export type Database = {
       }
       products: {
         Row: {
+          brand: string | null
           category: string | null
           created_at: string | null
+          description: string | null
           id: number
           image_url: string | null
+          model: string | null
           name: string
+          rating: number | null
+          review_count: number | null
         }
         Insert: {
+          brand?: string | null
           category?: string | null
           created_at?: string | null
+          description?: string | null
           id?: number
           image_url?: string | null
+          model?: string | null
           name: string
+          rating?: number | null
+          review_count?: number | null
         }
         Update: {
+          brand?: string | null
           category?: string | null
           created_at?: string | null
+          description?: string | null
           id?: number
           image_url?: string | null
+          model?: string | null
           name?: string
+          rating?: number | null
+          review_count?: number | null
+        }
+        Relationships: []
+      }
+      stores: {
+        Row: {
+          id: number
+          logo: string | null
+          name: string
+          website: string | null
+        }
+        Insert: {
+          id?: number
+          logo?: string | null
+          name: string
+          website?: string | null
+        }
+        Update: {
+          id?: number
+          logo?: string | null
+          name?: string
+          website?: string | null
         }
         Relationships: []
       }

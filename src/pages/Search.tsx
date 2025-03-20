@@ -1,29 +1,107 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { searchProducts } from '@/utils/mockData';
 import { Product } from '@/types';
 import Navbar from '@/components/Navbar';
 import ProductCard from '@/components/ProductCard';
 import { Search as SearchIcon, FilterX } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/components/ui/use-toast';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
-    setIsLoading(true);
-    // Search for products
-    const results = searchProducts(query);
-    
-    // Add a small delay to show loading animation
-    setTimeout(() => {
-      setProducts(results);
-      setIsLoading(false);
-    }, 500);
-  }, [query]);
+    const fetchProducts = async () => {
+      setIsLoading(true);
+      
+      try {
+        let productQuery = supabase
+          .from('products')
+          .select(`
+            id,
+            name,
+            description,
+            category,
+            image_url:image_url,
+            brand,
+            model,
+            rating,
+            review_count,
+            created_at:created_at,
+            prices(
+              id,
+              price,
+              currency,
+              product_link,
+              last_updated
+            )
+          `);
+        
+        // Apply search filter if query exists
+        if (query) {
+          productQuery = productQuery.or(
+            `name.ilike.%${query}%,description.ilike.%${query}%,brand.ilike.%${query}%,category.ilike.%${query}%,model.ilike.%${query}%`
+          );
+        }
+
+        const { data, error } = await productQuery;
+
+        if (error) {
+          console.error('Error fetching products:', error);
+          toast({
+            variant: "destructive",
+            title: "Failed to load products",
+            description: error.message
+          });
+          setProducts([]);
+        } else if (data) {
+          // Transform the Supabase data to match our Product type
+          const transformedProducts: Product[] = data.map(item => ({
+            id: item.id.toString(),
+            name: item.name,
+            description: item.description || '',
+            category: item.category || '',
+            imageUrl: item.image_url || '',
+            brand: item.brand || '',
+            model: item.model || '',
+            prices: (item.prices || []).map(price => ({
+              id: price.id.toString(),
+              storeId: 'store1', // We'll need to map this properly later
+              price: price.price,
+              currency: price.currency || 'USD',
+              priceDate: price.last_updated || new Date().toISOString(),
+              url: price.product_link
+            })),
+            dateAdded: item.created_at || new Date().toISOString(),
+            ...(item.rating && { rating: item.rating }),
+            ...(item.review_count && { reviewCount: item.review_count })
+          }));
+          
+          setProducts(transformedProducts);
+        }
+      } catch (error) {
+        console.error('Error in fetchProducts:', error);
+        toast({
+          variant: "destructive",
+          title: "Something went wrong",
+          description: "Failed to load products. Please try again."
+        });
+        setProducts([]);
+      } finally {
+        // Add a small delay to show loading animation
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 500);
+      }
+    };
+
+    fetchProducts();
+  }, [query, toast]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
