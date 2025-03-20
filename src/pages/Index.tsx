@@ -1,12 +1,15 @@
 
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { getDeals } from '@/utils/mockData';
+import ProductCard from '@/components/ProductCard';
 import Navbar from '@/components/Navbar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search } from 'lucide-react';
+import { Search, Sparkles } from 'lucide-react';
 
 const Index = () => {
+  const deals = getDeals();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -48,6 +51,21 @@ const Index = () => {
             </div>
           </form>
         </section>
+
+        {/* Top Deals Section */}
+        {deals.length > 0 && (
+          <section className="mb-16">
+            <div className="flex items-center mb-8">
+              <Sparkles className="text-primary mr-2 h-6 w-6" />
+              <h2 className="text-2xl font-semibold">Top Deals</h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {deals.slice(0, 4).map((product, index) => (
+                <ProductCard key={product.id} product={product} index={index} />
+              ))}
+            </div>
+          </section>
+        )}
       </main>
 
       {/* Footer */}
