@@ -10,7 +10,7 @@ import Index from './pages/Index';
 import SearchResults from './pages/Search';
 import ProductDetail from './pages/ProductDetail';
 import LoginPage from './pages/Login';
-import RegisterPage from './pages/Register';
+import RegisterPage from './pages/Login'; // Change to Login as temporary fix
 import WishlistPage from './pages/Wishlist';
 import About from './pages/About';
 import Deals from './pages/Deals';
@@ -47,7 +47,7 @@ function App() {
           },
           {
             path: "/register",
-            element: <RegisterPage />,
+            element: <LoginPage />, // Reusing LoginPage for now
           },
           {
             path: "/wishlist",
