@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   createBrowserRouter,
@@ -5,17 +6,18 @@ import {
 } from "react-router-dom";
 import './App.css';
 import { cn } from "@/lib/utils";
-import Index from '@/pages';
-import SearchResults from '@/pages/SearchResults';
-import ProductDetail from '@/pages/ProductDetail';
-import LoginPage from '@/pages/LoginPage';
-import RegisterPage from '@/pages/RegisterPage';
-import WishlistPage from '@/pages/WishlistPage';
-import About from '@/pages/About';
-import Deals from '@/pages/Deals';
-import ProfileSettings from '@/pages/ProfileSettings';
-import { Toaster } from "@/components/ui/toaster"
+import Index from './pages/Index';
+import SearchResults from './pages/Search';
+import ProductDetail from './pages/ProductDetail';
+import LoginPage from './pages/Login';
+import RegisterPage from './pages/Register';
+import WishlistPage from './pages/Wishlist';
+import About from './pages/About';
+import Deals from './pages/Deals';
+import ProfileSettings from './pages/ProfileSettings';
+import { Toaster } from "@/components/ui/toaster";
 import CompareProducts from './pages/CompareProducts';
+import NotFound from './pages/NotFound';
 
 function App() {
   const className = cn(
@@ -65,6 +67,10 @@ function App() {
           {
             path: "/compare",
             element: <CompareProducts />,
+          },
+          {
+            path: "*",
+            element: <NotFound />,
           },
         ])}
       />
