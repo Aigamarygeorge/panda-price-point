@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, Search, X } from 'lucide-react';
@@ -53,9 +54,6 @@ const Navbar = () => {
             <Link to="/deals" className="block py-2 text-lg font-medium hover:text-primary transition-colors">
               Deals
             </Link>
-            <Link to="/categories" className="block py-2 text-lg font-medium hover:text-primary transition-colors">
-              Categories
-            </Link>
             <Link to="/contact" className="block py-2 text-lg font-medium hover:text-primary transition-colors">
               Contact
             </Link>
@@ -77,9 +75,6 @@ const Navbar = () => {
           </Link>
           <Link to="/deals" className="text-sm font-medium hover:text-primary transition-colors">
             Deals
-          </Link>
-          <Link to="/categories" className="text-sm font-medium hover:text-primary transition-colors">
-            Categories
           </Link>
           <Link to="/contact" className="text-sm font-medium hover:text-primary transition-colors">
             Contact
@@ -154,9 +149,6 @@ const Navbar = () => {
               </Link>
               <Link to="/deals" className="text-lg font-medium hover:text-primary transition-colors">
                 Deals
-              </Link>
-              <Link to="/categories" className="text-lg font-medium hover:text-primary transition-colors">
-                Categories
               </Link>
               <Link to="/contact" className="text-lg font-medium hover:text-primary transition-colors">
                 Contact
