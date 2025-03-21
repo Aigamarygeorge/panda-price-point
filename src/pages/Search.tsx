@@ -5,7 +5,7 @@ import { Product } from '@/types';
 import Navbar from '@/components/Navbar';
 import ProductCard from '@/components/ProductCard';
 import { Search as SearchIcon, FilterX } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '@/lib/supabase';
 import { useToast } from '@/components/ui/use-toast';
 
 const Search = () => {
