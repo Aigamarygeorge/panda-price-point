@@ -1,307 +1,195 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Search, Heart, ShoppingBag, User, Menu, X, LogOut, Settings, GitCompare } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-import { useToast } from '@/components/ui/use-toast';
-import { getCompareLists } from '@/utils/mockData';
+import NavbarProfileMenu from './NavbarProfileMenu';
 
 const Navbar = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { toast } = useToast();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchBarOpen, setSearchBarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userName, setUserName] = useState('');
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [searchFocused, setSearchFocused] = useState(false);
-  const [compareCount, setCompareCount] = useState(0);
+  const location = useLocation();
 
   useEffect(() => {
-    const loginStatus = localStorage.getItem('isLoggedIn') === 'true';
-    const name = localStorage.getItem('userName') || '';
-    setIsLoggedIn(loginStatus);
-    setUserName(name);
+    // Close mobile menu and search bar when route changes
+    setMobileMenuOpen(false);
+    setSearchBarOpen(false);
+    setSearchQuery('');
+  }, [location.pathname]);
 
-    const compareList = getCompareLists();
-    setCompareCount(compareList.length);
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
 
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [location]);
+  const toggleSearchBar = () => {
+    setSearchBarOpen(!searchBarOpen);
+  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery('');
-      setIsMenuOpen(false);
+    if (searchQuery.trim() !== '') {
+      window.location.href = `/search?q=${searchQuery}`;
     }
   };
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userName');
-    setIsLoggedIn(false);
-    setUserName('');
-    toast({
-      description: "Logged out successfully",
-    });
-    navigate('/');
-  };
-
-  const goToProfileSettings = () => {
-    navigate('/profile-settings');
-  };
-
+  
   return (
-    <nav className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-white'} border-b border-border`}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center group">
-              <ShoppingBag className="h-8 w-8 text-primary mr-2 transition-transform group-hover:scale-110 duration-300" />
-              <span className="text-xl font-bold text-secondary">
-                Price<span className="text-primary">Panda</span>
-              </span>
+    <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200 shadow-sm">
+      {/* Expandable Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 bg-white z-50">
+          <div className="flex items-center justify-between p-4">
+            <Link to="/" className="flex items-center font-bold text-lg">
+              E-Shop
             </Link>
+            <Button variant="ghost" size="icon" onClick={toggleMobileMenu}>
+              <X className="h-6 w-6" />
+            </Button>
           </div>
-
-          <div className="hidden md:flex items-center space-x-1">
-            <Link 
-              to="/" 
-              className={`px-3 py-2 transition-colors duration-300 ${location.pathname === '/' ? 'text-primary font-medium' : 'text-gray-600 hover:text-primary'}`}
-            >
+          <nav className="p-4">
+            <Link to="/" className="block py-2 text-lg font-medium hover:text-primary transition-colors">
               Home
             </Link>
-            
-            <Link 
-              to="/deals" 
-              className={`px-3 py-2 transition-colors duration-300 ${location.pathname === '/deals' ? 'text-primary font-medium' : 'text-gray-600 hover:text-primary'}`}
-            >
+            <Link to="/deals" className="block py-2 text-lg font-medium hover:text-primary transition-colors">
               Deals
             </Link>
-            <Link 
-              to="/about" 
-              className={`px-3 py-2 transition-colors duration-300 ${location.pathname === '/about' ? 'text-primary font-medium' : 'text-gray-600 hover:text-primary'}`}
+            <Link to="/categories" className="block py-2 text-lg font-medium hover:text-primary transition-colors">
+              Categories
+            </Link>
+            <Link to="/contact" className="block py-2 text-lg font-medium hover:text-primary transition-colors">
+              Contact
+            </Link>
+          </nav>
+        </div>
+      )}
+      
+      {/* Main navbar */}
+      <div className="container mx-auto px-4 flex h-16 items-center justify-between">
+        {/* Logo */}
+        <Link to="/" className="flex items-center">
+          <span className="font-bold text-xl md:text-2xl">E-Shop</span>
+        </Link>
+        
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center space-x-8">
+          <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
+            Home
+          </Link>
+          <Link to="/deals" className="text-sm font-medium hover:text-primary transition-colors">
+            Deals
+          </Link>
+          <Link to="/categories" className="text-sm font-medium hover:text-primary transition-colors">
+            Categories
+          </Link>
+          <Link to="/contact" className="text-sm font-medium hover:text-primary transition-colors">
+            Contact
+          </Link>
+        </nav>
+        
+        {/* Search and User */}
+        <div className="flex items-center space-x-4">
+          {/* Search Icon (Desktop) */}
+          <div className="hidden md:block">
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={toggleSearchBar}
+              className="hover:bg-gray-100 text-gray-600"
+              aria-label="Search"
             >
-              About
-            </Link>
+              <Search className="h-5 w-5" />
+            </Button>
           </div>
-
-          {location.pathname !== '/' && (
-            <div className="hidden md:flex flex-1 max-w-md mx-4">
-              <form onSubmit={handleSearch} className="w-full flex">
-                <Input
-                  type="search"
-                  placeholder="Search for products..."
-                  className={`w-full focus-visible:ring-primary rounded-l-full pl-4 transition-all duration-300 ${searchFocused ? 'search-bar-expanded' : 'search-bar-collapsed'}`}
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onFocus={() => setSearchFocused(true)}
-                  onBlur={() => setSearchFocused(false)}
-                />
-                <Button type="submit" className="rounded-r-full bg-primary hover:bg-primary/90 transition-all duration-300">
-                  <Search className="h-4 w-4" />
-                </Button>
-              </form>
-            </div>
-          )}
-
-          <div className="hidden md:flex items-center space-x-3">
-            <Link to="/wishlist" className="p-2 rounded-full hover:bg-muted transition-colors duration-300 relative">
-              <Heart className="h-5 w-5 heart-favorite" />
-            </Link>
-            
-            <Link to="/compare" className="p-2 rounded-full hover:bg-muted transition-colors duration-300 relative">
-              <GitCompare className="h-5 w-5" />
-              {compareCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                  {compareCount}
-                </span>
-              )}
-            </Link>
-
-            {isLoggedIn ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-8 w-8 rounded-full hover:bg-gray-100 transition-colors duration-300">
-                    <User className="h-5 w-5" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 scale-in">
-                  <div className="flex items-center justify-start p-2">
-                    <div className="flex flex-col space-y-1 leading-none">
-                      <p className="font-medium">Welcome, {userName}</p>
-                    </div>
-                  </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={goToProfileSettings} className="cursor-pointer w-full transition-colors duration-200 hover:bg-muted hover:text-primary">
-                    <Settings className="mr-2 h-4 w-4" />
-                    <span>Profile Settings</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/wishlist" className="cursor-pointer w-full transition-colors duration-200 hover:bg-muted hover:text-primary">
-                      <Heart className="mr-2 h-4 w-4" />
-                      <span>Wishlist</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/compare" className="cursor-pointer w-full transition-colors duration-200 hover:bg-muted hover:text-primary">
-                      <GitCompare className="mr-2 h-4 w-4" />
-                      <span>Compare Products</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer transition-colors duration-200 hover:bg-red-50 hover:text-destructive">
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Log out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Link to="/login">
-                <Button variant="default" className="btn-hover-effect">Login</Button>
-              </Link>
-            )}
-          </div>
-
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={toggleMenu}
-              className="p-2 rounded-md hover:bg-muted focus:outline-none transition-colors duration-300"
-            >
-              {isMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
+          
+          {/* Mobile Menu Button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden hover:bg-gray-100 text-gray-600"
+            onClick={toggleMobileMenu}
+            aria-label="Menu"
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
+          
+          {/* User Profile */}
+          <div className="hidden md:block">
+            <NavbarProfileMenu />
           </div>
         </div>
       </div>
-
-      {isMenuOpen && (
-        <div className="md:hidden bg-white shadow-lg border-t border-border slide-in-right">
-          <div className="px-4 pt-2 pb-3 space-y-1">
-            <form onSubmit={handleSearch} className="mb-4 flex">
-              <Input
-                type="search"
-                placeholder="Search for products..."
-                className="w-full rounded-l-full pl-4"
+      
+      {/* Expandable Search Bar */}
+      {searchBarOpen && (
+        <div className="border-t border-gray-200 py-3 px-4 bg-gray-50">
+          <div className="container mx-auto">
+            <form onSubmit={handleSearch} className="relative">
+              <Input 
+                type="search" 
+                placeholder="Search for products..." 
+                className="w-full pr-10"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              <Button type="submit" className="rounded-r-full bg-primary hover:bg-primary/90">
-                <Search className="h-4 w-4" />
+              <Button 
+                type="submit" 
+                variant="ghost" 
+                size="icon" 
+                className="absolute right-0 top-0 h-full text-gray-400"
+              >
+                <Search className="h-5 w-5" />
               </Button>
             </form>
-
-            <Link 
-              to="/" 
-              className="block py-2 text-base font-medium hover:text-primary transition-colors duration-300"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Home
-            </Link>
-            <Link 
-              to="/deals" 
-              className="block py-2 text-base font-medium hover:text-primary transition-colors duration-300"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Deals
-            </Link>
-            <Link 
-              to="/about" 
-              className="block py-2 text-base font-medium hover:text-primary transition-colors duration-300"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              About
-            </Link>
-
-            <div className="flex space-x-4 pt-2">
-              <Link 
-                to="/wishlist" 
-                className="flex items-center text-base font-medium hover:text-primary transition-colors duration-300"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <Heart className="h-5 w-5 mr-2" />
-                Wishlist
-              </Link>
-              
-              <Link 
-                to="/compare" 
-                className="flex items-center text-base font-medium hover:text-primary transition-colors duration-300"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <GitCompare className="h-5 w-5 mr-2" />
-                Compare
-                {compareCount > 0 && (
-                  <span className="ml-1 bg-primary text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                    {compareCount}
-                  </span>
-                )}
-              </Link>
-              
-              {isLoggedIn ? (
-                <>
-                  <button 
-                    onClick={() => {
-                      goToProfileSettings();
-                      setIsMenuOpen(false);
-                    }}
-                    className="flex items-center text-base font-medium hover:text-primary transition-colors duration-300"
-                  >
-                    <Settings className="h-5 w-5 mr-2" />
-                    Profile
-                  </button>
-                  <button 
-                    onClick={() => {
-                      handleLogout();
-                      setIsMenuOpen(false);
-                    }}
-                    className="flex items-center text-base font-medium hover:text-primary transition-colors duration-300"
-                  >
-                    <LogOut className="h-5 w-5 mr-2" />
-                    Logout
-                  </button>
-                </>
-              ) : (
-                <Link 
-                  to="/login" 
-                  className="flex items-center text-base font-medium hover:text-primary transition-colors duration-300"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <User className="h-5 w-5 mr-2" />
-                  Login
-                </Link>
-              )}
-            </div>
           </div>
         </div>
       )}
-    </nav>
+      
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-gray-200 bg-white">
+          <div className="container mx-auto py-4 px-4">
+            <nav className="flex flex-col space-y-4">
+              <Link to="/" className="text-lg font-medium hover:text-primary transition-colors">
+                Home
+              </Link>
+              <Link to="/deals" className="text-lg font-medium hover:text-primary transition-colors">
+                Deals
+              </Link>
+              <Link to="/categories" className="text-lg font-medium hover:text-primary transition-colors">
+                Categories
+              </Link>
+              <Link to="/contact" className="text-lg font-medium hover:text-primary transition-colors">
+                Contact
+              </Link>
+              
+              {/* Search for mobile */}
+              <form onSubmit={handleSearch} className="relative mt-2">
+                <Input 
+                  type="search" 
+                  placeholder="Search for products..." 
+                  className="w-full pr-10"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <Button 
+                  type="submit" 
+                  variant="ghost" 
+                  size="icon" 
+                  className="absolute right-0 top-0 h-full text-gray-400"
+                >
+                  <Search className="h-5 w-5" />
+                </Button>
+              </form>
+              
+              {/* User profile for mobile */}
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <NavbarProfileMenu />
+              </div>
+            </nav>
+          </div>
+        </div>
+      )}
+    </header>
   );
 };
 
