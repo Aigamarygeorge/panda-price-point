@@ -5,7 +5,7 @@ import { getProductById, getStoreById, isInWishlist, addToWishlist, removeFromWi
 import { Product, Store } from '@/types';
 import { formatPrice } from '@/utils/priceUtils';
 import { useToast } from '@/components/ui/use-toast';
-import { Heart, ExternalLink, ArrowLeft, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Heart, ExternalLink, ArrowLeft, Star, ChevronLeft, ChevronRight, Store as StoreIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -187,7 +187,7 @@ const ProductDetail = () => {
                 </p>
               </div>
               
-              <div className="mt-6">
+              <div className="mt-6 space-y-3">
                 <a 
                   href={lowestPrice.url} 
                   target="_blank" 
@@ -199,6 +199,31 @@ const ProductDetail = () => {
                     <ExternalLink className="ml-2 h-4 w-4" />
                   </Button>
                 </a>
+                
+                <div className="flex flex-wrap gap-2">
+                  {sortedPrices.slice(0, 3).map((price, index) => {
+                    const store = getStoreInfo(price.storeId);
+                    return (
+                      <a 
+                        key={price.id}
+                        href={price.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1"
+                      >
+                        <Button variant="outline" className="w-full text-xs">
+                          <StoreIcon className="h-3 w-3 mr-1" />
+                          {store?.name || 'Store'}: {formatPrice(price.price)}
+                        </Button>
+                      </a>
+                    );
+                  })}
+                  {sortedPrices.length > 3 && (
+                    <Button variant="ghost" onClick={() => document.getElementById('compare-prices')?.scrollIntoView({ behavior: 'smooth' })}>
+                      +{sortedPrices.length - 3} more
+                    </Button>
+                  )}
+                </div>
               </div>
               
               <div className="mt-6">
@@ -209,7 +234,7 @@ const ProductDetail = () => {
           </div>
         </div>
         
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden p-4 md:p-6 mb-8">
+        <div id="compare-prices" className="bg-white rounded-lg shadow-sm overflow-hidden p-4 md:p-6 mb-8">
           <h2 className="text-xl font-semibold mb-4">Compare Prices</h2>
           <div className="overflow-x-auto">
             <Table>
@@ -227,7 +252,15 @@ const ProductDetail = () => {
                   return (
                     <TableRow key={price.id}>
                       <TableCell className="font-medium">
-                        {store?.name || 'Unknown Store'}
+                        <a 
+                          href={price.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-primary hover:underline inline-flex items-center"
+                        >
+                          {store?.name || 'Unknown Store'}
+                          <ExternalLink className="ml-1 h-3 w-3" />
+                        </a>
                       </TableCell>
                       <TableCell>
                         {formatPrice(price.price)}
