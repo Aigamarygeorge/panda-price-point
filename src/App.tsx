@@ -1,86 +1,50 @@
 
 import React from 'react';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Toaster } from '@/components/ui/toaster';
+import { NotificationProvider } from '@/contexts/NotificationContext';
+
+// Import pages
+import Index from '@/pages/Index';
+import Search from '@/pages/Search';
+import ProductDetail from '@/pages/ProductDetail';
+import Deals from '@/pages/Deals';
+import Contact from '@/pages/Contact';
+import NotFound from '@/pages/NotFound';
+import Wishlist from '@/pages/Wishlist';
+import CompareProducts from '@/pages/CompareProducts';
+import Login from '@/pages/Login';
+import Register from '@/pages/Register';
+import About from '@/pages/About';
+import Privacy from '@/pages/Privacy';
+import Terms from '@/pages/Terms';
+import ProfileSettings from '@/pages/ProfileSettings';
+
 import './App.css';
-import { cn } from "@/lib/utils";
-import Index from './pages/Index';
-import SearchResults from './pages/Search';
-import ProductDetail from './pages/ProductDetail';
-import LoginPage from './pages/Login';
-import RegisterPage from './pages/Register';
-import WishlistPage from './pages/Wishlist';
-import About from './pages/About';
-import Deals from './pages/Deals';
-import ProfileSettings from './pages/ProfileSettings';
-import { Toaster } from "@/components/ui/toaster";
-import CompareProducts from './pages/CompareProducts';
-import NotFound from './pages/NotFound';
-import Terms from './pages/Terms';
 
 function App() {
-  const className = cn(
-    "min-h-screen antialiased",
-  );
-
   return (
-    <div className={className}>
-      <RouterProvider
-        router={createBrowserRouter([
-          {
-            path: "/",
-            element: <Index />,
-          },
-          {
-            path: "/search",
-            element: <SearchResults />,
-          },
-          {
-            path: "/product/:id",
-            element: <ProductDetail />,
-          },
-          {
-            path: "/login",
-            element: <LoginPage />,
-          },
-          {
-            path: "/register",
-            element: <RegisterPage />,
-          },
-          {
-            path: "/wishlist",
-            element: <WishlistPage />,
-          },
-          {
-            path: "/about",
-            element: <About />,
-          },
-          {
-            path: "/deals",
-            element: <Deals />,
-          },
-          {
-            path: "/profile-settings",
-            element: <ProfileSettings />,
-          },
-          {
-            path: "/compare",
-            element: <CompareProducts />,
-          },
-          {
-            path: "/terms",
-            element: <Terms />,
-          },
-          {
-            path: "*",
-            element: <NotFound />,
-          },
-        ])}
-      />
-      <Toaster />
-    </div>
+    <NotificationProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/deals" element={<Deals />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/compare" element={<CompareProducts />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/profile" element={<ProfileSettings />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Toaster />
+      </Router>
+    </NotificationProvider>
   );
 }
 

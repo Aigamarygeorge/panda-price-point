@@ -1,12 +1,13 @@
 
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Product } from '@/types';
 import Navbar from '@/components/Navbar';
 import ProductCard from '@/components/ProductCard';
 import { Search as SearchIcon, FilterX } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
+import { useNotifications } from '@/contexts/NotificationContext';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
@@ -14,6 +15,8 @@ const Search = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const { addNotification } = useNotifications();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -58,6 +61,11 @@ const Search = () => {
             title: "Failed to load products",
             description: error.message
           });
+          addNotification({
+            title: "Search Error",
+            message: "Failed to load products. Please try again.",
+            type: "error"
+          });
           setProducts([]);
         } else if (data) {
           // Transform the Supabase data to match our Product type
@@ -83,6 +91,20 @@ const Search = () => {
           }));
           
           setProducts(transformedProducts);
+          
+          if(query && transformedProducts.length === 0) {
+            addNotification({
+              title: "No Results",
+              message: `We couldn't find any products matching "${query}"`,
+              type: "info"
+            });
+          } else if(query && transformedProducts.length > 0) {
+            addNotification({
+              title: "Search Results",
+              message: `Found ${transformedProducts.length} products matching "${query}"`,
+              type: "success"
+            });
+          }
         }
       } catch (error) {
         console.error('Error in fetchProducts:', error);
@@ -90,6 +112,11 @@ const Search = () => {
           variant: "destructive",
           title: "Something went wrong",
           description: "Failed to load products. Please try again."
+        });
+        addNotification({
+          title: "Error",
+          message: "Something went wrong with your search. Please try again.",
+          type: "error"
         });
         setProducts([]);
       } finally {
@@ -101,7 +128,7 @@ const Search = () => {
     };
 
     fetchProducts();
-  }, [query, toast]);
+  }, [query, toast, addNotification]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
@@ -135,13 +162,19 @@ const Search = () => {
                 Try using different keywords or browse our categories.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
-                <a href="/" className="btn-hover-effect inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90">
+                <button 
+                  onClick={() => navigate('/')}
+                  className="btn-hover-effect inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90"
+                >
                   <SearchIcon className="h-4 w-4 mr-2" />
                   Browse All Products
-                </a>
-                <a href="/deals" className="btn-hover-effect inline-flex items-center justify-center px-4 py-2 border border-primary text-primary rounded-md shadow-sm text-sm font-medium bg-white hover:bg-primary/5">
+                </button>
+                <button
+                  onClick={() => navigate('/deals')}
+                  className="btn-hover-effect inline-flex items-center justify-center px-4 py-2 border border-primary text-primary rounded-md shadow-sm text-sm font-medium bg-white hover:bg-primary/5"
+                >
                   View Today's Deals
-                </a>
+                </button>
               </div>
             </div>
           )}

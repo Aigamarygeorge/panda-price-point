@@ -5,6 +5,7 @@ import { Menu, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import NavbarProfileMenu from './NavbarProfileMenu';
+import NotificationBell from './NotificationBell';
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -96,6 +97,11 @@ const Navbar = () => {
             </Button>
           </div>
           
+          {/* Notification Bell */}
+          <div className="hidden md:block">
+            <NotificationBell />
+          </div>
+          
           {/* Mobile Menu Button */}
           <Button
             variant="ghost"
@@ -172,6 +178,12 @@ const Navbar = () => {
                   <Search className="h-5 w-5" />
                 </Button>
               </form>
+              
+              {/* Notification Bell for mobile */}
+              <div className="flex justify-between items-center mt-2 pt-4 border-t border-gray-100">
+                <span className="text-sm font-medium">Notifications</span>
+                <NotificationBell />
+              </div>
               
               {/* User profile for mobile */}
               <div className="mt-4 pt-4 border-t border-gray-100">
