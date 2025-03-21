@@ -49,6 +49,7 @@ export type Database = {
       }
       products: {
         Row: {
+          additional_images: string[] | null
           brand: string | null
           category: string | null
           created_at: string | null
@@ -61,6 +62,7 @@ export type Database = {
           review_count: number | null
         }
         Insert: {
+          additional_images?: string[] | null
           brand?: string | null
           category?: string | null
           created_at?: string | null
@@ -73,6 +75,7 @@ export type Database = {
           review_count?: number | null
         }
         Update: {
+          additional_images?: string[] | null
           brand?: string | null
           category?: string | null
           created_at?: string | null

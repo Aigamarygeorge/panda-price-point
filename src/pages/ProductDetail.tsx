@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getProductById, getStoreById, isInWishlist, addToWishlist, removeFromWishlist } from '@/utils/mockData';
@@ -76,10 +77,8 @@ const ProductDetail = () => {
     return getStoreById(storeId);
   };
 
+  // We're simplifying this to just use the main image since additional images were removed
   const getProductImages = (product: Product): string[] => {
-    if (product.additionalImages && product.additionalImages.length > 0) {
-      return [product.imageUrl, ...product.additionalImages];
-    }
     return [product.imageUrl];
   };
 
@@ -142,31 +141,10 @@ const ProductDetail = () => {
             <div className="relative">
               <div className="relative aspect-square overflow-hidden rounded-lg">
                 <img 
-                  src={images[currentImageIndex]} 
+                  src={product.imageUrl} 
                   alt={product.name} 
                   className="w-full h-full object-cover rounded-lg"
                 />
-                
-                {images.length > 1 && (
-                  <>
-                    <Button 
-                      variant="ghost" 
-                      size="icon"
-                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full"
-                      onClick={prevImage}
-                    >
-                      <ChevronLeft className="h-6 w-6" />
-                    </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="icon"
-                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full"
-                      onClick={nextImage}
-                    >
-                      <ChevronRight className="h-6 w-6" />
-                    </Button>
-                  </>
-                )}
                 
                 {product.rating && (
                   <div className="absolute top-4 right-4">
@@ -177,26 +155,6 @@ const ProductDetail = () => {
                   </div>
                 )}
               </div>
-              
-              {images.length > 1 && (
-                <div className="flex justify-center mt-4 gap-2">
-                  {images.map((img, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentImageIndex(index)}
-                      className={`w-16 h-16 rounded-md overflow-hidden border-2 transition-all ${
-                        currentImageIndex === index ? 'border-primary' : 'border-transparent'
-                      }`}
-                    >
-                      <img 
-                        src={img} 
-                        alt={`${product.name} - view ${index + 1}`} 
-                        className="w-full h-full object-cover"
-                      />
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
             
             <div>
