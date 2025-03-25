@@ -83,14 +83,12 @@ const Search = () => {
             rating,
             review_count,
             created_at,
-            additional_images,
             prices(
               id,
               price,
               currency,
               product_link,
-              last_updated,
-              store_id
+              last_updated
             )
           `)
           .range((page - 1) * productsPerPage, page * productsPerPage - 1);
@@ -129,7 +127,7 @@ const Search = () => {
             model: item.model || '',
             prices: (item.prices || []).map(price => ({
               id: price.id.toString(),
-              storeId: price.store_id || 'unknown', 
+              storeId: 'store1', // We'll need to map this properly later
               price: price.price,
               currency: price.currency || 'USD',
               priceDate: price.last_updated || new Date().toISOString(),
@@ -137,8 +135,7 @@ const Search = () => {
             })),
             dateAdded: item.created_at || new Date().toISOString(),
             ...(item.rating && { rating: item.rating }),
-            ...(item.review_count && { reviewCount: item.review_count }),
-            ...(item.additional_images && { additionalImages: item.additional_images })
+            ...(item.review_count && { reviewCount: item.review_count })
           }));
           
           setProducts(transformedProducts);
