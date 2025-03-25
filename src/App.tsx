@@ -23,6 +23,9 @@ import ProfileSettings from '@/pages/ProfileSettings';
 import './App.css';
 
 function App() {
+  // Set document title
+  document.title = 'PricePanda - Compare Prices & Find Deals';
+  
   return (
     <NotificationProvider>
       <Router>

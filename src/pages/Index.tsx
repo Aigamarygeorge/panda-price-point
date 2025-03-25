@@ -55,9 +55,14 @@ const Index = () => {
         {/* Top Deals Section */}
         {deals.length > 0 && (
           <section className="mb-16">
-            <div className="flex items-center mb-8">
-              <Sparkles className="text-primary mr-2 h-6 w-6" />
-              <h2 className="text-2xl font-semibold">Top Deals</h2>
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center">
+                <Sparkles className="text-primary mr-2 h-6 w-6" />
+                <h2 className="text-2xl font-semibold">Top Deals</h2>
+              </div>
+              <Link to="/deals" className="text-primary hover:underline text-sm font-medium">
+                View all deals →
+              </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {deals.slice(0, 4).map((product, index) => (
@@ -81,6 +86,9 @@ const Index = () => {
               </Link>
               <Link to="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 Terms of Service
+              </Link>
+              <Link to="/wishlist" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                Wishlist
               </Link>
               <Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 Contact Us
