@@ -16,7 +16,7 @@ import {
   isInCompareList,
   addToViewedProducts
 } from '@/utils/mockData';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 interface ProductCardProps {
   product: Product;
