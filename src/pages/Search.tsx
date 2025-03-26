@@ -27,6 +27,12 @@ const Search = () => {
   const { toast } = useToast();
   const { addNotification } = useNotifications();
   const navigate = useNavigate();
+  
+  // Store the last query and page to prevent unnecessary rerenders
+  const [lastFetchParams, setLastFetchParams] = useState({
+    query: '',
+    page: 0
+  });
 
   useEffect(() => {
     // Reset to first page when search query changes
@@ -34,6 +40,11 @@ const Search = () => {
   }, [query]);
 
   useEffect(() => {
+    // Skip fetch if we've already fetched with these exact params
+    if (lastFetchParams.query === query && lastFetchParams.page === page) {
+      return;
+    }
+    
     const fetchProducts = async () => {
       setIsLoading(true);
       
@@ -143,6 +154,13 @@ const Search = () => {
             });
           }
         }
+        
+        // Update lastFetchParams to prevent duplicate fetches
+        setLastFetchParams({
+          query: query,
+          page: page
+        });
+        
       } catch (error) {
         console.error('Error in fetchProducts:', error);
         toast({
