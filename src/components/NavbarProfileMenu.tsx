@@ -33,7 +33,7 @@ const NavbarProfileMenu = () => {
   };
 
   const handleProfileSettings = () => {
-    navigate('/profile-settings');
+    navigate('/profile'); // Changed from '/profile-settings' to '/profile' to match the route in App.tsx
   };
 
   if (!isLoggedIn) {
