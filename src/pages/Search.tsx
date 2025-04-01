@@ -78,6 +78,7 @@ const Search = () => {
             description,
             category,
             image_url,
+            additional_images,
             brand,
             model,
             rating,
@@ -88,6 +89,7 @@ const Search = () => {
               price,
               currency,
               product_link,
+              store_id,
               last_updated
             )
           `)
@@ -123,21 +125,23 @@ const Search = () => {
             description: item.description || '',
             category: item.category || '',
             imageUrl: item.image_url || '/placeholder.svg', // Fallback to placeholder image
+            additionalImages: item.additional_images || [],
             brand: item.brand || '',
             model: item.model || '',
             prices: (item.prices || []).map(price => ({
               id: price.id.toString(),
-              storeId: 'store1', // We'll need to map this properly later
+              storeId: price.store_id || 'store1',
               price: price.price,
               currency: price.currency || 'USD',
               priceDate: price.last_updated || new Date().toISOString(),
-              url: price.product_link
+              url: price.product_link || '#'  // Add default URL if missing
             })),
             dateAdded: item.created_at || new Date().toISOString(),
             ...(item.rating && { rating: item.rating }),
             ...(item.review_count && { reviewCount: item.review_count })
           }));
           
+          console.log("Transformed products:", transformedProducts);
           setProducts(transformedProducts);
           
           if(query && transformedProducts.length === 0 && page === 1) {
